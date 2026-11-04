@@ -10,6 +10,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 {
     public DbSet<FunkoEntity> Funkos => Set<FunkoEntity>();
     public DbSet<CategoriaEntity> Categorias => Set<CategoriaEntity>();
+    public DbSet<ProveedorEntity> Proveedores => Set<ProveedorEntity>();
     public DbSet<UserEntity> Users => Set<UserEntity>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -21,7 +22,32 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             entity.HasKey(c => c.Id);
 
             entity.Property(c => c.Nombre).HasColumnName("nombre").HasMaxLength(100).IsRequired();
-            entity.HasIndex(c => c.Nombre).IsUnique();
+            entity.Property(c => c.IsDeleted).HasColumnName("is_deleted");
+            entity.Property(c => c.CreatedAt).HasColumnName("created_at");
+            entity.Property(c => c.UpdatedAt).HasColumnName("updated_at");
+
+            entity.HasIndex(c => c.Nombre).IsUnique().HasFilter("\"is_deleted\" = FALSE");
+
+            // Las categorías borradas siguen en la tabla (borrado lógico); por defecto se ocultan.
+            entity.HasQueryFilter(c => !c.IsDeleted);
+        });
+
+        modelBuilder.Entity<ProveedorEntity>(entity =>
+        {
+            entity.ToTable("proveedores");
+
+            entity.HasKey(p => p.Id);
+
+            entity.Property(p => p.Nombre).HasColumnName("nombre").HasMaxLength(100).IsRequired();
+            entity.Property(p => p.Telefono).HasColumnName("telefono").HasMaxLength(20).IsRequired();
+            entity.Property(p => p.IsDeleted).HasColumnName("is_deleted");
+            entity.Property(p => p.CreatedAt).HasColumnName("created_at");
+            entity.Property(p => p.UpdatedAt).HasColumnName("updated_at");
+
+            entity.HasIndex(p => p.Nombre).IsUnique().HasFilter("\"is_deleted\" = FALSE");
+
+            // Los proveedores borrados siguen en la tabla (borrado lógico); por defecto se ocultan.
+            entity.HasQueryFilter(p => !p.IsDeleted);
         });
 
         modelBuilder.Entity<FunkoEntity>(entity =>
@@ -46,6 +72,13 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
                 .WithMany(c => c.Funkos)
                 .HasForeignKey(f => f.CategoriaId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            // Proveedor es opcional: un Funko puede no tener proveedor asignado todavía.
+            entity.HasOne(f => f.Proveedor)
+                .WithMany(p => p.Funkos)
+                .HasForeignKey(f => f.ProveedorId)
+                .OnDelete(DeleteBehavior.Restrict)
+                .IsRequired(false);
 
             // Los Funkos borrados siguen en la tabla (borrado lógico); por defecto se ocultan.
             entity.HasQueryFilter(f => !f.IsDeleted);

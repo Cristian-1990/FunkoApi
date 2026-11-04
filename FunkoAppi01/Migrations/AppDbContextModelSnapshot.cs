@@ -23,16 +23,29 @@ namespace FunkoAppi01.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("created_at");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("is_deleted");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("TEXT")
                         .HasColumnName("nombre");
 
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("updated_at");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Nombre")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("\"is_deleted\" = FALSE");
 
                     b.ToTable("categorias", (string)null);
                 });
@@ -64,6 +77,9 @@ namespace FunkoAppi01.Migrations
                         .HasColumnType("decimal(10,2)")
                         .HasColumnName("precio");
 
+                    b.Property<long?>("ProveedorId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("Stock")
                         .HasColumnType("INTEGER")
                         .HasColumnName("stock");
@@ -80,7 +96,48 @@ namespace FunkoAppi01.Migrations
                         .IsUnique()
                         .HasFilter("\"is_deleted\" = FALSE");
 
+                    b.HasIndex("ProveedorId");
+
                     b.ToTable("funkos", (string)null);
+                });
+
+            modelBuilder.Entity("FunkoAppi01.Entity.ProveedorEntity", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("created_at");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("is_deleted");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("nombre");
+
+                    b.Property<string>("Telefono")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("telefono");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Nombre")
+                        .IsUnique()
+                        .HasFilter("\"is_deleted\" = FALSE");
+
+                    b.ToTable("proveedores", (string)null);
                 });
 
             modelBuilder.Entity("FunkoAppi01.Entity.UserEntity", b =>
@@ -141,10 +198,22 @@ namespace FunkoAppi01.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("FunkoAppi01.Entity.ProveedorEntity", "Proveedor")
+                        .WithMany("Funkos")
+                        .HasForeignKey("ProveedorId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.Navigation("Categoria");
+
+                    b.Navigation("Proveedor");
                 });
 
             modelBuilder.Entity("FunkoAppi01.Entity.CategoriaEntity", b =>
+                {
+                    b.Navigation("Funkos");
+                });
+
+            modelBuilder.Entity("FunkoAppi01.Entity.ProveedorEntity", b =>
                 {
                     b.Navigation("Funkos");
                 });
