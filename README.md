@@ -2,7 +2,7 @@
 
 ![.NET](https://img.shields.io/badge/.NET-10-512BD4?style=flat-square&logo=dotnet&logoColor=white)
 ![C#](https://img.shields.io/badge/C%23-14-239120?style=flat-square&logo=csharp&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-53%20passing-2ea44f?style=flat-square)
+![Tests](https://img.shields.io/badge/tests-82%20passing-2ea44f?style=flat-square)
 ![SQLite](https://img.shields.io/badge/EF%20Core-SQLite-003B57?style=flat-square&logo=sqlite&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?style=flat-square&logo=postgresql&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-multi--stage-2496ED?style=flat-square&logo=docker&logoColor=white)
@@ -31,6 +31,12 @@ errores de dominio sin excepciones, documentación Swagger y despliegue con Dock
 | Actualizar un Funko completo | `PUT` | `/api/Funko/{id}` | autenticado | `200` / `404` |
 | Actualizar solo el precio | `PATCH` | `/api/Funko/{id}` | autenticado | `200` / `404` |
 | Eliminar un Funko (borrado lógico) | `DELETE` | `/api/Funko/{id}` | **solo Admin** | `204` / `404` / `403` |
+| Listar/buscar Categorias | `GET` | `/api/Categoria`, `/api/Categoria/search?nombre=` | pública | `200` |
+| Consultar una Categoria por id | `GET` | `/api/Categoria/{id}` | pública | `200` / `404` |
+| Crear/Actualizar/Borrar Categoria | `POST`/`PUT`/`DELETE` | `/api/Categoria[/{id}]` | **solo Admin** | `201`/`200`/`204` |
+| Listar/buscar Proveedores | `GET` | `/api/Proveedor`, `/api/Proveedor/search?nombre=` | pública | `200` |
+| Consultar un Proveedor por id | `GET` | `/api/Proveedor/{id}` | pública | `200` / `404` |
+| Crear/Actualizar/Borrar Proveedor | `POST`/`PUT`/`DELETE` | `/api/Proveedor[/{id}]` | **solo Admin** | `201`/`200`/`204` |
 | Registrarse | `POST` | `/api/auth/signup` | pública | `201` / `409` |
 | Iniciar sesión | `POST` | `/api/auth/login` | pública | `200` / `401` |
 | Perfil del usuario autenticado | `GET` | `/api/auth/me` | autenticado | `200` / `401` |
@@ -171,7 +177,7 @@ también los datos de Postgres).
 dotnet test
 ```
 
-**53 tests**, con NUnit, Moq y FluentAssertions, patrón AAA (Arrange, Act, Assert) y
+**82 tests**, con NUnit, Moq y FluentAssertions, patrón AAA (Arrange, Act, Assert) y
 separados en `CasosPositivos` y `CasosNegativos`.
 
 | Qué se prueba | Nº |
@@ -181,10 +187,18 @@ separados en `CasosPositivos` y `CasosNegativos`.
 | `FunkoValidator` | 7 |
 | `RepositoryFunko` (SQLite real en memoria, sin mocks) | 8 |
 | `ServiceFunko` (repositorio y validador mockeados) | 11 |
+| `ServiceCategoria` (repositorio y validador mockeados) | 11 |
+| `CategoriaValidator` | 4 |
+| `ServiceProveedor` (repositorio y validador mockeados) | 11 |
+| `ProveedorValidator` | 5 |
 | `JwtService` | 2 |
 | `AuthService` (repositorio mockeado) | 6 |
 | `FunkoController` — integración con `WebApplicationFactory` | 8 |
 | `AuthController` — integración con `WebApplicationFactory` | 6 |
+
+Categoria y Proveedor solo tienen tests de servicio y validador (Moq) por ahora — no
+ha dado tiempo a los de integración con `WebApplicationFactory` antes de la entrega;
+queda declarado en [Qué queda fuera](#-qué-queda-fuera).
 
 Los de integración levantan la API entera (sin mocks en ningún punto) contra una
 base de datos EF Core InMemory aislada por test, y no solo miran el código de
@@ -352,6 +366,17 @@ hay un test dedicado que fuerce un token JWT realmente expirado (requeriría un
 `JwtConfig` de expiración casi inmediata solo para ese test); sí está probado que un
 token ausente o falsificado se rechaza con `401`.
 
-Todo lo demás —persistencia real con migraciones, relación Uno a Muchos, JWT +
+Sobre el CRUD de Categoria y Proveedor (añadido fuera de las 12 fases, a petición
+del profesor según el esquema de la pizarra de clase):
+
+- `Proveedor` en `Funko` es una relación **opcional** todavía no expuesta en los DTOs
+  de Funko (existe en la base de datos, pero no se puede asignar desde la API).
+- No hay tests de integración (`WebApplicationFactory`) de `CategoriaController` ni
+  `ProveedorController`, solo de servicio y validador.
+- La pizarra menciona además caché con Redis, persistencia políglota con MongoDB,
+  subida de imágenes y automatización con Bruno — fuera del documento oficial de la
+  Práctica 3 y fuera del alcance de esta entrega.
+
+Todo lo demás —persistencia real con migraciones, relaciones Uno a Muchos, JWT +
 BCrypt, tests unitarios y de integración, Docker con PostgreSQL— está hecho y
 verificado en vivo, no solo "compila".

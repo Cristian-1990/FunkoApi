@@ -391,4 +391,31 @@ Normas de este documento (ver `CLAUDE.md` en `Entorno-Servidor/`, puntos 7 y 9):
 - Cuando la clase llegue al tema 29 (Docker), valorar migrar los tests de datos de SQLite/InMemory a Testcontainers.PostgreSql, para igualar de verdad la técnica de `RepositorioRemoto`.
 - Sigue abierta la decisión sobre renombrar `Infraestructure/`→`Infrastructure/`, `Repository/`→`Repositories/` y `Service/`→`Services/` para igualar los nombres de carpeta de `RepositorioRemoto` (detectado en la revisión de esta misma sesión, Cristian no ha confirmado todavía si se hace).
 
+## Entrada 13. CRUD de Categoria y Proveedor (entrega y exposición mañana)
+
+**Qué se hizo:**
+1. Sincronización con el repo de Jesús: su `main` ya tenía fusionado nuestro PR entero. Añadió por su cuenta dos clases sueltas sin usar (`Models/Categoria.cs`, `Models/Proveedor.cs`) y tiene una rama propia sin fusionar (`feature-repository`) montando un CRUD de Categoria. No se fusiona nada de eso: no aporta nada que no tengamos ya y mete riesgo a horas de la entrega.
+2. Cristian trae aviso de Jesús (confirmado con foto de la pizarra de clase, `Pizarra-Funko.jpg`) de que Categoria y Proveedor necesitan su propio CRUD, no solo existir como relación del Funko. La pizarra muestra más cosas (Redis, MongoDB políglota, subida de imágenes, Bruno automatizado) que exceden claramente el documento oficial de la Práctica 3 — se decide con Cristian limitar el alcance de esta sesión a: CRUD de Categoria y Proveedor en SQL/EF Core, con el mismo patrón que Funko.
+3. Añadida `ProveedorEntity` (Fluent API, tabla `proveedores`, borrado lógico) y relación opcional `Funko → Proveedor` (`ProveedorId` nullable, `OnDelete(Restrict)`). Opcional porque exponerla como obligatoria habría exigido tocar `CreateFunkoDto`/`UpdateFunkoDto` y los 53 tests existentes de Funko, un riesgo innecesario a horas de la entrega.
+4. `CategoriaEntity` ampliada con `IsDeleted`/`CreatedAt`/`UpdatedAt` (antes solo tenía Id y Nombre): sin eso no se puede dar de baja una categoría igual que un Funko.
+5. CRUD completo de Categoria y Proveedor replicando exactamente la arquitectura de Funko: Entity (Fluent API) → Model → Dto → Mapper → Repository (valores planos) → Service (`Result<T, DomainError>`) → Validator → Controller.
+6. Lectura pública, escritura (`Crear`/`Actualizar`/`Borrar`) restringida a rol `ADMIN` — tal como muestra la pizarra para Categoria y Proveedor. **No se ha tocado la autorización de `FunkoController`** (que deja Crear/Actualizar a cualquier usuario autenticado, no solo Admin): cambiarla ahora habría sido otro riesgo no pedido explícitamente para Funko.
+7. `DomainError.NotFound`/`AlreadyExists` generalizados con un parámetro `Entidad` (por defecto `"Funko"`, no rompe nada existente) para reutilizar un único tipo de error en las tres entidades, igual que había planteado Jesús en su rama (sin fusionarla, pero la idea era buena).
+8. Migración `AddCategoriaProveedorCrud` generada y aplicada en limpio contra SQLite: build, 82/82 tests (53 de antes + 29 nuevos) y pruebas en vivo con `curl` — login, crear/duplicar/actualizar/borrar Categoria y Proveedor, lectura anónima en 200 y escritura sin token en 401.
+9. Encontrado y corregido en caliente un fallo de concordancia de género en los mensajes de error ("Ya existe un Categoria" en vez de "una Categoria"): se reescribió a una frase neutra, "Ya existe un registro de {Entidad} con el nombre...", que funciona para Funko, Categoria y Proveedor sin más parches.
+
+**Decisión tomada:** CRUD completo de Categoria y Proveedor en SQL/EF Core, mismo patrón que Funko, relación Proveedor→Funko opcional, escritura solo Admin.
+
+**Alternativas descartadas:**
+- Fusionar la rama `feature-repository` de Jesús. Descartada: no está en su `main`, es trabajo suyo independiente, y a horas de la entrega no compensa el riesgo de integrarlo.
+- Hacer también lo de Redis, MongoDB, imágenes y Bruno de la pizarra. Descartado con Cristian: no está en el documento oficial de la práctica y es inviable en el tiempo que queda.
+- Relación `Proveedor` obligatoria en Funko (como Categoria). Descartada por el riesgo de romper los 53 tests existentes de Funko a horas de la entrega; queda como mejora futura.
+- Igualar la autorización de Categoria/Proveedor (todo Admin) en `FunkoController` también. Descartada: no se pidió, y tocar algo que ya funciona y está evaluado no compensa el riesgo.
+
+**Qué queda pendiente:**
+- Exponer `Proveedor` en los DTOs de Funko (ahora mismo la relación existe en la base de datos pero no se puede asignar todavía desde la API).
+- Tests de integración (`WebApplicationFactory`) de `CategoriaController`/`ProveedorController` — por ahora solo hay tests de servicio y validador (Moq), igual que se hizo para Funko en su momento, pero no ha dado tiempo a los de integración con la entrega mañana.
+- La búsqueda por nombre (`GetByNameAsync`) distingue mayúsculas de minúsculas en SQLite (heredado del mismo patrón que ya tenía `RepositoryFunko`): buscar "ani" no encuentra "Anime". No es una regresión nueva, es una limitación ya existente; se deja anotada para no repetir la pregunta.
+- Sigue sin confirmar el renombrado de carpetas (`Infraestructure/`→`Infrastructure/`, etc.) de la Entrada 12.
+
 <!-- La siguiente entrada se añade aquí, con el mismo formato: Qué se hizo / Decisión y porqué / Alternativas descartadas / Pendiente -->
