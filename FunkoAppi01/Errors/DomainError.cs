@@ -6,20 +6,22 @@ namespace FunkoAppi01.Errors;
 /// <param name="Message">Mensaje.</param>
 public abstract record DomainError(string Message)
 {
-    /// <summary>Cuando no existe ningún Funko con ese identificador.</summary>
+    /// <summary>Cuando no existe ningún registro con ese identificador.</summary>
     /// <param name="Id">Identificador buscado.</param>
-    public sealed record NotFound(long Id)
-        : DomainError($"No se ha encontrado ningún Funko con el identificador: {Id}");
+    /// <param name="Entidad">Tipo de entidad buscada (por defecto, Funko).</param>
+    public sealed record NotFound(long Id, string Entidad = "Funko")
+        : DomainError($"No se ha encontrado ningún registro de {Entidad} con el identificador: {Id}");
 
     /// <summary>Los datos no cumplen con el validador.</summary>
     /// <param name="Errors">Lista de errores detectados.</param>
     public sealed record Validation(IEnumerable<string> Errors)
         : DomainError(string.Join(", ", Errors));
 
-    /// <summary>Ya existe un Funko activo con ese nombre.</summary>
+    /// <summary>Ya existe un registro activo con ese nombre.</summary>
     /// <param name="Nombre">Nombre duplicado.</param>
-    public sealed record AlreadyExists(string Nombre)
-        : DomainError($"Ya existe un Funko con el nombre: {Nombre}");
+    /// <param name="Entidad">Tipo de entidad duplicada (por defecto, Funko).</param>
+    public sealed record AlreadyExists(string Nombre, string Entidad = "Funko")
+        : DomainError($"Ya existe un registro de {Entidad} con el nombre: {Nombre}");
 
     /// <summary>Credenciales inválidas o token no válido.</summary>
     /// <param name="Reason">Motivo.</param>
@@ -55,4 +57,34 @@ public static class AuthErrors
 
     /// <summary>Email ya registrado.</summary>
     public static DomainError Conflict(string reason) => new DomainError.Conflict(reason);
+}
+
+/// <summary>
+/// Factoría para crear errores de dominio de Categoria.
+/// </summary>
+public static class CategoriaErrors
+{
+    /// <summary>Categoria no encontrada.</summary>
+    public static DomainError NotFound(long id) => new DomainError.NotFound(id, "Categoria");
+
+    /// <summary>Validación con la lista de errores.</summary>
+    public static DomainError Validation(IEnumerable<string> errors) => new DomainError.Validation(errors);
+
+    /// <summary>Nombre ya existente entre las categorías activas.</summary>
+    public static DomainError AlreadyExists(string nombre) => new DomainError.AlreadyExists(nombre, "Categoria");
+}
+
+/// <summary>
+/// Factoría para crear errores de dominio de Proveedor.
+/// </summary>
+public static class ProveedorErrors
+{
+    /// <summary>Proveedor no encontrado.</summary>
+    public static DomainError NotFound(long id) => new DomainError.NotFound(id, "Proveedor");
+
+    /// <summary>Validación con la lista de errores.</summary>
+    public static DomainError Validation(IEnumerable<string> errors) => new DomainError.Validation(errors);
+
+    /// <summary>Nombre ya existente entre los proveedores activos.</summary>
+    public static DomainError AlreadyExists(string nombre) => new DomainError.AlreadyExists(nombre, "Proveedor");
 }
