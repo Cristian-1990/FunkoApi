@@ -8,6 +8,8 @@ public static class ServiceConfig
     {
         {
             services.AddScoped<IServiceFunko, ServiceFunko>();
+            services.AddScoped<IServiceCategoria, ServiceCategoria>();
+            services.AddScoped<IServiceProveedor, ServiceProveedor>();
             return services;
         }
     }

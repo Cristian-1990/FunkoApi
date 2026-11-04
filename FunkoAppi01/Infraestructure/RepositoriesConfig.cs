@@ -8,6 +8,8 @@ public static class RepositoriesConfig
     {
         // Scoped: comparte el mismo AppDbContext (tambien Scoped) durante toda la peticion.
         services.AddScoped<IRepositoryFunko, RepositoryFunko>();
+        services.AddScoped<IRepositoryCategoria, RepositoryCategoria>();
+        services.AddScoped<IRepositoryProveedor, RepositoryProveedor>();
         return services;
     }
 }
