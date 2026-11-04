@@ -372,4 +372,23 @@ Normas de este documento (ver `CLAUDE.md` en `Entorno-Servidor/`, puntos 7 y 9):
 - README: añadir cómo levantar el perfil Production con `docker compose up`.
 - Nada más de la pauta original queda sin abordar salvo la fase 3 (Minimal API, omitida a propósito desde el bloque del README) y el caso de borde de "token expirado" de verdad (fase 11, opcional).
 
+## Entrada 12. Ritmo del temario: qué se adelantó y qué se queda pendiente de revisar
+
+**Qué se hizo:** Cristian avisa de que la clase va por el tema 18, mientras que la fase 11 (temas 24 y 28) y la fase 12 (tema 29) de la pauta corresponden a temario que todavía no se ha visto. Se revisa qué partes de lo ya construido dependen de eso.
+
+**Decisión tomada:**
+- Los tests (NUnit + Moq + FluentAssertions, unitarios y de integración) **no son el problema**: siguen el mismo patrón que `RepositorioRemoto`, que Cristian ya domina. Se mantienen tal cual.
+- Swagger/OpenAPI con XMLDoc (parte de la fase 11) y todo el despliegue con Docker (fase 12, tema 29) sí son temario no visto todavía. El código ya existe, compila, pasa los tests y se verificó en vivo — no se revierte, porque sería tirar trabajo verificado — pero se marca aquí como **adelanto pendiente de repasar con Cristian antes de exponerlo**, para que no llegue a la exposición sin entender alguna de las dos partes.
+- Repasando `RepositorioRemoto` por este motivo, se encuentra que sus tests de repositorio (`UserRepositoryTests.cs`) usan `Testcontainers.PostgreSql` (contenedor real de Postgres durante el test), tal como pide la regla 4 del `CLAUDE.md` ("TestContainers para la capa de datos, base de datos real, no simulada"). Nuestros tests de datos usan SQLite en memoria y el proveedor InMemory de EF Core, no Testcontainers — una desviación de la referencia que nunca se había marcado como decisión nuestra (incumplía el punto 1 de la regla de oro).
+- **Esa desviación se mantiene y ahora queda justificada:** Testcontainers depende de Docker, y Docker es justo la fase 12 (tema 29) que todavía no se ha visto. Adoptar Testcontainers ahora introduciría una dependencia de una técnica de temario futuro antes de tiempo. Se retoma cuando la clase llegue a Docker.
+
+**Alternativas descartadas:**
+- Revertir las fases 11 (parcial) y 12 del entregable para que cuadre exactamente con el tema 18. Descartada por Cristian: prefiere mantener el trabajo ya verificado y repasarlo con calma antes de exponerlo, no borrarlo.
+- Migrar ya los tests de datos a Testcontainers para igualar la referencia. Descartada por la misma razón: necesitaría Docker, que es justo lo que todavía no toca.
+
+**Qué queda pendiente:**
+- Repasar con Cristian, antes de la exposición, la parte de Swagger/XMLDoc y todo el bloque de Docker, para que pueda explicarlo con la misma soltura que el resto.
+- Cuando la clase llegue al tema 29 (Docker), valorar migrar los tests de datos de SQLite/InMemory a Testcontainers.PostgreSql, para igualar de verdad la técnica de `RepositorioRemoto`.
+- Sigue abierta la decisión sobre renombrar `Infraestructure/`→`Infrastructure/`, `Repository/`→`Repositories/` y `Service/`→`Services/` para igualar los nombres de carpeta de `RepositorioRemoto` (detectado en la revisión de esta misma sesión, Cristian no ha confirmado todavía si se hace).
+
 <!-- La siguiente entrada se añade aquí, con el mismo formato: Qué se hizo / Decisión y porqué / Alternativas descartadas / Pendiente -->
