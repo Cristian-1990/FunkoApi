@@ -418,4 +418,14 @@ Normas de este documento (ver `CLAUDE.md` en `Entorno-Servidor/`, puntos 7 y 9):
 - La búsqueda por nombre (`GetByNameAsync`) distingue mayúsculas de minúsculas en SQLite (heredado del mismo patrón que ya tenía `RepositoryFunko`): buscar "ani" no encuentra "Anime". No es una regresión nueva, es una limitación ya existente; se deja anotada para no repetir la pregunta.
 - Sigue sin confirmar el renombrado de carpetas (`Infraestructure/`→`Infrastructure/`, etc.) de la Entrada 12.
 
+## Entrada 14. Cierre: no se renombran las carpetas
+
+**Qué se hizo:** Cristian compara a mano la estructura de carpetas contra el árbol de ejemplo de la pauta oficial. Se confirma que difieren en nombres (`Controller` vs `Controllers`, `Repository` vs `Repositories`, `Service` vs `Services`, `Infraestructure` vs `Infrastructure`), heredado del proyecto de Jesús.
+
+**Decisión tomada:** no se renombra nada. Lo que importa es la arquitectura (capas, separación de responsabilidades, `Result<T, DomainError>`, Fluent API, DTOs) y esa sí coincide con la pauta y con `RepositorioRemoto`. Los nombres de carpeta son cosméticos y Cristian decide que no vale la pena el riesgo de tocar namespaces en todo el proyecto a horas de la entrega.
+
+**Alternativas descartadas:** renombrar `Infraestructure/`→`Infrastructure/`, `Repository/`→`Repositories/`, `Service/`→`Services/`, `Controller/`→`Controllers/` (quedó propuesto en la Entrada 12). Descartado explícitamente por Cristian.
+
+**Qué queda pendiente:** nada de este punto — queda cerrado. Si en algún momento se quiere hacer, es un cambio mecánico (renombrar carpeta + namespace + imports) sin impacto en el comportamiento.
+
 <!-- La siguiente entrada se añade aquí, con el mismo formato: Qué se hizo / Decisión y porqué / Alternativas descartadas / Pendiente -->
