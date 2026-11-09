@@ -59,6 +59,21 @@ public static class AuthenticationConfig
                         logger.LogWarning("Fallo de autenticación en {Path}: {Message}",
                             context.HttpContext.Request.Path, context.Exception.Message);
                         return Task.CompletedTask;
+                    },
+                    // SignalR no puede mandar la cabecera Authorization en la conexión
+                    // WebSocket inicial; el cliente manda el token como query string
+                    // (?access_token=...) y aquí se traslada al sitio donde el
+                    // middleware de JWT lo espera. Solo para las rutas de los hubs:
+                    // el resto de la API sigue exigiendo la cabecera normal.
+                    OnMessageReceived = context =>
+                    {
+                        var accessToken = context.Request.Query["access_token"];
+                        var path = context.HttpContext.Request.Path;
+
+                        if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/hubs"))
+                            context.Token = accessToken;
+
+                        return Task.CompletedTask;
                     }
                 };
             });

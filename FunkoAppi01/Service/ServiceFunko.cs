@@ -2,11 +2,13 @@
 using FunkoAppi01.Cache;
 using FunkoAppi01.Dto;
 using FunkoAppi01.Errors;
+using FunkoAppi01.Hubs;
 using FunkoAppi01.Mappers;
 using FunkoAppi01.Repository;
 using FunkoAppi01.Service.Email;
 using FunkoAppi01.Validators;
 using Microsoft.AspNetCore.OutputCaching;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace FunkoAppi01.Service;
@@ -14,7 +16,8 @@ namespace FunkoAppi01.Service;
 /// <summary>
 /// Orquesta las reglas de negocio de Funko entre el validador y el repositorio.
 /// Las lecturas pasan por una caché de aplicación (cache-aside); las escrituras
-/// la invalidan, igual que invalidan el OutputCache HTTP, y notifican por correo.
+/// la invalidan, igual que invalidan el OutputCache HTTP, notifican por correo y
+/// avisan en tiempo real al grupo "admins" de SignalR.
 /// </summary>
 public class ServiceFunko(
     IRepositoryFunko repository,
@@ -22,7 +25,8 @@ public class ServiceFunko(
     ILogger<ServiceFunko> logger,
     IOutputCacheStore outputCacheStore,
     ICacheService cache,
-    IEmailService emailService) : IServiceFunko
+    IEmailService emailService,
+    IHubContext<FunkosHub> hubContext) : IServiceFunko
 {
     private const string CacheTag = "funkos";
     private const string AllCacheKey = "funkos:all";
@@ -59,6 +63,7 @@ public class ServiceFunko(
         logger.LogInformation("Funko creado: {Id} - {Nombre}", creado.Id, creado.Nombre);
         await InvalidarCacheAsync();
         _ = EnviarNotificacionCreadoAsync(creado.Nombre, creado.Precio);
+        _ = NotificarTiempoRealAsync("FunkoCreado", creado.ToDto());
         return Result.Success<FunkoDto, DomainError>(creado.ToDto());
     }
 
@@ -79,6 +84,7 @@ public class ServiceFunko(
 
         logger.LogInformation("Funko actualizado: {Id} - {Nombre}", actualizado.Id, actualizado.Nombre);
         await InvalidarCacheAsync(id);
+        _ = NotificarTiempoRealAsync("FunkoActualizado", actualizado.ToDto());
         return Result.Success<FunkoDto, DomainError>(actualizado.ToDto());
     }
 
@@ -108,7 +114,24 @@ public class ServiceFunko(
         logger.LogInformation("Funko borrado (logico): {Id}", id);
         await InvalidarCacheAsync(id);
         _ = EnviarNotificacionEliminadoAsync(nombreBorrado ?? $"id {id}");
+        _ = NotificarTiempoRealAsync("FunkoEliminado", new { Id = id, Nombre = nombreBorrado });
         return Result.Success<bool, DomainError>(true);
+    }
+
+    /// <summary>
+    /// Avisa en tiempo real al grupo "admins" por SignalR. Fire-and-forget, igual
+    /// que el email: un fallo de notificación no debe tumbar la petición.
+    /// </summary>
+    private async Task NotificarTiempoRealAsync(string evento, object payload)
+    {
+        try
+        {
+            await hubContext.Clients.Group("admins").SendAsync(evento, payload);
+        }
+        catch (Exception ex)
+        {
+            logger.LogWarning(ex, "Error enviando notificacion SignalR: {Evento}", evento);
+        }
     }
 
     /// <summary>Invalida tanto el OutputCache HTTP como la caché de aplicación tras una escritura.</summary>
