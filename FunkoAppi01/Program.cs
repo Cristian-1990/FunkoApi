@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Text.Json;
 using FunkoAppi01.Entity;
 using FunkoAppi01.Infraestructure;
@@ -30,6 +31,21 @@ builder.Services.AddSwaggerGen(options =>
         In = ParameterLocation.Header,
         Description = "Pega aquí el token, con el prefijo \"Bearer \" (p. ej. \"Bearer eyJ...\")"
     });
+
+    options.EnableAnnotations();
+
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    if (File.Exists(xmlPath))
+        options.IncludeXmlComments(xmlPath);
+});
+
+builder.Services.AddCors(options =>
+{
+    // "AllowAll" solo vale para desarrollo. En producción habría que restringir
+    // con WithOrigins(...) a los dominios reales del cliente.
+    options.AddPolicy("AllowAll", policy =>
+        policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 });
 
 builder.Services
@@ -37,7 +53,9 @@ builder.Services
     .AddRepositories()
     .AddValidators()
     .AddServices()
-    .AddAuthenticationJwt(builder.Configuration);
+    .AddAuthenticationJwt(builder.Configuration)
+    .AddOutputCacheConfig()
+    .AddRateLimitConfig();
 
 var app = builder.Build();
 
@@ -63,12 +81,18 @@ app.UseSerilogRequestLogging();
 
 app.UseMiddleware<ExceptionHandlerMiddleware>();
 
+app.UseRateLimiter();
+
 app.UseSwagger();
 app.UseSwaggerUI();
+
+app.UseCors("AllowAll");
 
 // El orden importa: primero quien eres (Authentication), luego que puedes hacer (Authorization).
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseOutputCacheConfig();
 
 app.MapControllers();
 
