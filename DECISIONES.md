@@ -460,4 +460,16 @@ Normas de este documento (ver `CLAUDE.md` en `Entorno-Servidor/`, puntos 7 y 9):
 
 **Qué queda pendiente:** Bloques 3-8 (Mail, WebSocket, GraphQL, Mongo, Bruno), checklist final, presentación en tres niveles. Puerto de PostgreSQL en `compose.yaml` cambiado de 5433 a 5434 porque 5433 lo ocupaba otro proyecto (`beautylab-postgres`) en esta máquina — no es un cambio de diseño, es evitar un conflicto de puertos local.
 
+## Entrada 17. Bloque 3: notificaciones por email
+
+**Qué se hizo:** `IEmailService`/`MemoryEmailService` (deja constancia en el log, no envía nada de verdad) + `EmailTemplates` (HTML inline), siguiendo el código real de `soluciones/19-ProductosEmail` (no la versión más elaborada del `.md`, que incluye adjuntos/plantillas Razor/cola con `BackgroundService` — el código real de José Luis es mucho más simple: solo `MemoryEmailService` en los dos entornos, sin servidor SMTP). Disparo fire-and-forget (`_ = ...`) en `ServiceFunko.AddAsync`/`DeleteAsync`, con try/catch interno para que un fallo de email nunca tumbe la petición.
+
+**Verificado en vivo:** creado y borrado un Funko, confirmado en el log el `=== EMAIL SENT ===` con destinatario, asunto y el nombre real del Funko en los dos casos.
+
+**Decisión tomada:** no se activa MailKit/SMTP real (ni en Production). El propio código de referencia de José Luis lo deja comentado/pendiente en su solución — replicar exactamente eso, no inventar un servidor SMTP que él no activa.
+
+**Alternativas descartadas:** cola de emails con `BackgroundService`/`IServiceScopeFactory` (versión "completa" del `.md`). Descartada: el código real que de verdad compila y pasa sus tests usa fire-and-forget simple, que es lo que se sigue aquí.
+
+**Qué queda pendiente:** Bloques 5-8 (WebSocket, GraphQL, Mongo, Bruno), checklist final, presentación en tres niveles.
+
 <!-- La siguiente entrada se añade aquí, con el mismo formato: Qué se hizo / Decisión y porqué / Alternativas descartadas / Pendiente -->
