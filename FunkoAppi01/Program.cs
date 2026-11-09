@@ -36,7 +36,7 @@ builder.Services.AddSwaggerGen(options =>
     options.EnableAnnotations();
 
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    var xmlPath = System.IO.Path.Combine(AppContext.BaseDirectory, xmlFile);
     if (File.Exists(xmlPath))
         options.IncludeXmlComments(xmlPath);
 });
@@ -63,7 +63,8 @@ builder.Services
     .AddRateLimitConfig()
     .AddCache(builder.Configuration, builder.Environment)
     .AddEmail(builder.Environment)
-    .AddSignalRConfiguration();
+    .AddSignalRConfiguration()
+    .AddGraphQLConfig(builder.Environment);
 
 var app = builder.Build();
 
@@ -104,6 +105,7 @@ app.UseOutputCacheConfig();
 
 app.MapControllers();
 app.MapHub<FunkosHub>("/hubs/funkos").RequireAuthorization();
+app.MapGraphQLEndpoints();
 
 app.Run();
 
