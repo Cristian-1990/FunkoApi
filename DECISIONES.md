@@ -484,4 +484,16 @@ Normas de este documento (ver `CLAUDE.md` en `Entorno-Servidor/`, puntos 7 y 9):
 
 **Qué queda pendiente:** Bloques 6-8 (GraphQL, Mongo, Bruno), checklist final, presentación en tres niveles.
 
+## Entrada 19. Bloque 6: GraphQL con HotChocolate
+
+**Qué se hizo:** `FunkosQuery` (funkos, funko(id), categorias), `FunkoMutation` (crearFunko/actualizarFunko con `[Authorize]`, eliminarFunko con `[Authorize(Roles: Admin)]`) y `FunkoSubscription` (funkoCreado/funkoActualizado/funkoEliminado, publicadas con `ITopicEventSender` desde la Mutation), con HotChocolate 16.6.6 — mismos paquetes y mismo patrón de registro (`AddGraphQLServer().AddQueryType<T>()...`) que `soluciones/17-ProductosGraphQL`. GraphQL convive con los controladores REST en `/graphql`, sin sustituirlos.
+
+**Decisión tomada — adaptación deliberada, no un descuido:** José Luis resuelve la relación Funko→Categoria con un `CategoriaByIdDataLoader` sobre la entidad de EF Core (evita N+1 queries). Aquí no hace falta: nuestro `FunkoDto` ya llega con la Categoria resuelta como texto desde el propio `ServiceFunko`/`RepositoryFunko` (decisión de la Entrada 3), así que Query y Mutation reutilizan directamente `IServiceFunko`/`IServiceCategoria` — los mismos servicios que usa la API REST, con su mismo `Result<T,DomainError>` — en vez de tocar la entidad o montar un DataLoader que no resolvería ningún problema real aquí. Se evita además un hueco que detecté en la investigación: el `CategoriaByIdDataLoader` de referencia pide `IDbContextFactory<AppDbContext>`, que la app real de José Luis nunca registra (solo su proyecto de tests) — no se arrastra ese problema.
+
+**Verificado en vivo con `curl` contra `/graphql`:** query `funkos`/`funko(id)`/`categorias`, mutation `crearFunko` (con y sin token — sin token devuelve `AUTH_NOT_AUTHENTICATED`, con token crea de verdad y aparece en la siguiente query), mutation `eliminarFunko` con rol Admin (refleja el borrado lógico al momento). Las subscriptions están cableadas con el mismo mecanismo (`ITopicEventSender`/`[Subscribe][Topic]`) que ya se demostró en vivo con SignalR en la Entrada 18, pero no se ha probado con un cliente GraphQL-WS por falta de tiempo — queda declarado como pendiente, no como "hecho y probado".
+
+**Alternativas descartadas:** ninguna de fondo — la única desviación real (sin DataLoader) está justificada arriba, no es una desviación arbitraria.
+
+**Qué queda pendiente:** probar las subscriptions GraphQL con un cliente real (como se hizo con SignalR). Bloque 7 (Mongo), Bloque 8 (Bruno), checklist final, presentación en tres niveles.
+
 <!-- La siguiente entrada se añade aquí, con el mismo formato: Qué se hizo / Decisión y porqué / Alternativas descartadas / Pendiente -->
