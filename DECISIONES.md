@@ -448,4 +448,16 @@ Normas de este documento (ver `CLAUDE.md` en `Entorno-Servidor/`, puntos 7 y 9):
 
 **Qué queda pendiente:** Bloques 2-8 (Redis, Mail, WebSocket, GraphQL, Mongo, Bruno), más el checklist final y la presentación en tres niveles.
 
+## Entrada 16. Bloque 2: caché de aplicación con Redis
+
+**Qué se hizo:** `ICacheService` (Get/Set/Remove/Exists/GetOrSet genéricos) con dos implementaciones — `MemoryCacheService` en Development (sin Docker), `RedisCacheService` en Production — exactamente el mismo patrón Dev/Prod que ya usa `DatabaseConfig` para SQLite/PostgreSQL. `GetOrSetAsync` usa un semáforo por clave para evitar cache stampede. Aplicado a `ServiceFunko` (el candidato obvio, más lecturas): `GetAllAsync`/`GetByIdAsync` pasan por la caché, y todas las escrituras invalidan tanto esta caché de aplicación como el OutputCache HTTP del Bloque 1 (un único método privado `InvalidarCacheAsync`). Redis añadido a `compose.yaml` (imagen `redis:7-alpine`, con contraseña, healthcheck).
+
+**Verificado en vivo, con Redis real en Docker** (no solo con el `MemoryCacheService` de desarrollo): `docker compose up`, creado un Funko, comprobado con `redis-cli KEYS "*"` que la clave `funko:1` existe de verdad dentro del contenedor Redis, actualizado el precio y confirmado que la clave desaparece (invalidación real) y se repuebla con el valor correcto en la siguiente lectura.
+
+**Decisión tomada:** solo `ServiceFunko` usa esta caché por ahora, no Categoria/Proveedor — para no dispersar el tiempo disponible; el patrón es el mismo si se quisiera extender luego.
+
+**Alternativas descartadas:** decorar el repositorio con Scrutor en vez de inyectar la caché directamente en el servicio. El propio reto de José Luis lo marca como "puntos extra", no como el camino principal — se sigue el camino principal.
+
+**Qué queda pendiente:** Bloques 3-8 (Mail, WebSocket, GraphQL, Mongo, Bruno), checklist final, presentación en tres niveles. Puerto de PostgreSQL en `compose.yaml` cambiado de 5433 a 5434 porque 5433 lo ocupaba otro proyecto (`beautylab-postgres`) en esta máquina — no es un cambio de diseño, es evitar un conflicto de puertos local.
+
 <!-- La siguiente entrada se añade aquí, con el mismo formato: Qué se hizo / Decisión y porqué / Alternativas descartadas / Pendiente -->
