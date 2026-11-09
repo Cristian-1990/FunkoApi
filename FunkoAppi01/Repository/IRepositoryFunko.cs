@@ -12,4 +12,5 @@ public interface IRepositoryFunko
     Task<Funko?> UpdatePrecioAsync(long id, decimal precio);
     Task<IReadOnlyList<Funko>> GetByNameAsync(string? nombre);
     Task<bool> ExistsByNameAsync(string nombre, long? excludeId = null);
+    Task<(IReadOnlyList<Funko> Items, int Total)> GetPagedAsync(int page, int pageSize);
 }

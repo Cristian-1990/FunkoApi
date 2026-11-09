@@ -4,6 +4,7 @@ using FunkoAppi01.Errors;
 using FunkoAppi01.Mappers;
 using FunkoAppi01.Repository;
 using FunkoAppi01.Validators;
+using Microsoft.AspNetCore.OutputCaching;
 
 namespace FunkoAppi01.Service;
 
@@ -13,8 +14,11 @@ namespace FunkoAppi01.Service;
 public class ServiceProveedor(
     IRepositoryProveedor repository,
     IProveedorValidator validator,
-    ILogger<ServiceProveedor> logger) : IServiceProveedor
+    ILogger<ServiceProveedor> logger,
+    IOutputCacheStore outputCacheStore) : IServiceProveedor
 {
+    private const string CacheTag = "proveedores";
+
     public async Task<IEnumerable<ProveedorDto>> GetAllAsync() =>
         (await repository.GetAllAsync()).Select(p => p.ToDto());
 
@@ -40,6 +44,7 @@ public class ServiceProveedor(
 
         var creado = await repository.AddAsync(request.ToProveedor());
         logger.LogInformation("Proveedor creado: {Id} - {Nombre}", creado.Id, creado.Nombre);
+        await outputCacheStore.EvictByTagAsync(CacheTag, CancellationToken.None);
         return Result.Success<ProveedorDto, DomainError>(creado.ToDto());
     }
 
@@ -59,6 +64,7 @@ public class ServiceProveedor(
         }
 
         logger.LogInformation("Proveedor actualizado: {Id} - {Nombre}", actualizado.Id, actualizado.Nombre);
+        await outputCacheStore.EvictByTagAsync(CacheTag, CancellationToken.None);
         return Result.Success<ProveedorDto, DomainError>(actualizado.ToDto());
     }
 
@@ -71,9 +77,23 @@ public class ServiceProveedor(
         }
 
         logger.LogInformation("Proveedor borrado (logico): {Id}", id);
+        await outputCacheStore.EvictByTagAsync(CacheTag, CancellationToken.None);
         return Result.Success<bool, DomainError>(true);
     }
 
     public async Task<IEnumerable<ProveedorDto>> GetByNameAsync(string termino) =>
         (await repository.GetByNameAsync(termino)).Select(p => p.ToDto());
+
+    public async Task<PagedResponse<ProveedorDto>> GetPagedAsync(int page, int pageSize)
+    {
+        page = Math.Max(page, 1);
+        pageSize = Math.Clamp(pageSize, 1, 100);
+
+        var (items, total) = await repository.GetPagedAsync(page, pageSize);
+        var totalPages = (int)Math.Ceiling(total / (double)pageSize);
+
+        return new PagedResponse<ProveedorDto>(
+            items.Select(p => p.ToDto()),
+            new PageMetadata(page, pageSize, totalPages, total));
+    }
 }

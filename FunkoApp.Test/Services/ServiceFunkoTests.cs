@@ -6,6 +6,7 @@ using FunkoAppi01.Models;
 using FunkoAppi01.Repository;
 using FunkoAppi01.Service;
 using FunkoAppi01.Validators;
+using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
@@ -20,6 +21,7 @@ public class ServiceFunkoTests
 {
     private Mock<IRepositoryFunko> _mockRepository = null!;
     private Mock<IFunkoValidator> _mockValidator = null!;
+    private Mock<IOutputCacheStore> _mockOutputCacheStore = null!;
     private ServiceFunko _service = null!;
 
     [SetUp]
@@ -27,10 +29,12 @@ public class ServiceFunkoTests
     {
         _mockRepository = new Mock<IRepositoryFunko>();
         _mockValidator = new Mock<IFunkoValidator>();
+        _mockOutputCacheStore = new Mock<IOutputCacheStore>();
         _service = new ServiceFunko(
             _mockRepository.Object,
             _mockValidator.Object,
-            new Mock<ILogger<ServiceFunko>>().Object);
+            new Mock<ILogger<ServiceFunko>>().Object,
+            _mockOutputCacheStore.Object);
     }
 
     private static Funko CrearFunko(long id = 1, string nombre = "Pikachu") => new()

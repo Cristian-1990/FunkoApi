@@ -4,6 +4,7 @@ using FunkoAppi01.Errors;
 using FunkoAppi01.Mappers;
 using FunkoAppi01.Repository;
 using FunkoAppi01.Validators;
+using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.Extensions.Logging;
 
 namespace FunkoAppi01.Service;
@@ -14,8 +15,11 @@ namespace FunkoAppi01.Service;
 public class ServiceFunko(
     IRepositoryFunko repository,
     IFunkoValidator validator,
-    ILogger<ServiceFunko> logger) : IServiceFunko
+    ILogger<ServiceFunko> logger,
+    IOutputCacheStore outputCacheStore) : IServiceFunko
 {
+    private const string CacheTag = "funkos";
+
     public async Task<IEnumerable<FunkoDto>> GetAllAsync() =>
         (await repository.GetAllAsync()).Select(f => f.ToDto());
 
@@ -41,6 +45,7 @@ public class ServiceFunko(
 
         var creado = await repository.AddAsync(request.ToFunko());
         logger.LogInformation("Funko creado: {Id} - {Nombre}", creado.Id, creado.Nombre);
+        await outputCacheStore.EvictByTagAsync(CacheTag, CancellationToken.None);
         return Result.Success<FunkoDto, DomainError>(creado.ToDto());
     }
 
@@ -60,6 +65,7 @@ public class ServiceFunko(
         }
 
         logger.LogInformation("Funko actualizado: {Id} - {Nombre}", actualizado.Id, actualizado.Nombre);
+        await outputCacheStore.EvictByTagAsync(CacheTag, CancellationToken.None);
         return Result.Success<FunkoDto, DomainError>(actualizado.ToDto());
     }
 
@@ -72,6 +78,7 @@ public class ServiceFunko(
         if (await repository.UpdatePrecioAsync(id, precio) is not { } actualizado)
             return Result.Failure<FunkoDto, DomainError>(FunkoErrors.NotFound(id));
 
+        await outputCacheStore.EvictByTagAsync(CacheTag, CancellationToken.None);
         return Result.Success<FunkoDto, DomainError>(actualizado.ToDto());
     }
 
@@ -84,9 +91,23 @@ public class ServiceFunko(
         }
 
         logger.LogInformation("Funko borrado (logico): {Id}", id);
+        await outputCacheStore.EvictByTagAsync(CacheTag, CancellationToken.None);
         return Result.Success<bool, DomainError>(true);
     }
 
     public async Task<IEnumerable<FunkoDto>> GetByNameAsync(string termino) =>
         (await repository.GetByNameAsync(termino)).Select(f => f.ToDto());
+
+    public async Task<PagedResponse<FunkoDto>> GetPagedAsync(int page, int pageSize)
+    {
+        page = Math.Max(page, 1);
+        pageSize = Math.Clamp(pageSize, 1, 100);
+
+        var (items, total) = await repository.GetPagedAsync(page, pageSize);
+        var totalPages = (int)Math.Ceiling(total / (double)pageSize);
+
+        return new PagedResponse<FunkoDto>(
+            items.Select(f => f.ToDto()),
+            new PageMetadata(page, pageSize, totalPages, total));
+    }
 }
