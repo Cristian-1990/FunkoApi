@@ -428,4 +428,24 @@ Normas de este documento (ver `CLAUDE.md` en `Entorno-Servidor/`, puntos 7 y 9):
 
 **Qué queda pendiente:** nada de este punto — queda cerrado. Si en algún momento se quiere hacer, es un cambio mecánico (renombrar carpeta + namespace + imports) sin impacto en el comportamiento.
 
+## Entrada 15. Ampliación de la entrega: extras pedidos por el profesor (plazo: jueves 12 nov, 20:30)
+
+**Contexto:** al ampliar el plazo de entrega, el profesor amplió también el alcance (foto de los apuntes de clase de Cristian): documentación Swagger por endpoint, optimización (paginación, `AsNoTracking`, OutputCache), persistencia políglota (Postgres/Mongo/Cassandra), caché con Redis, WebSocket, GraphQL, Mail, Identity, seguridad (CORS, rate limiting, auditoría), todo con Docker, y tests con Bruno. Identity queda aparcado (ambiguo, pendiente de confirmar con Jesús/profesor qué significa exactamente). El resto, confirmado como obligatorio por Cristian.
+
+**Qué se hizo (Bloque 1 — Optimización y seguridad):** antes de tocar nada se investigó en paralelo (6 sub-tareas) el código real de José Luis para cada bloque, para no inventar ningún patrón — regla de oro del proyecto. Para este bloque:
+1. **Paginación:** `PagedResponse<T>`/`PageMetadata` (DTOs compartidos), `GetPagedAsync` en los tres repositorios (`Skip`/`Take`/`CountAsync`, `AsNoTracking`) y los tres servicios (clamps `page≥1`, `pageSize∈[1,100]`, igual que hace José Luis), endpoint `GET /api/{recurso}/paged?page=&pageSize=`.
+2. **OutputCache:** middleware nativo de ASP.NET Core (`AddOutputCache`/`UseOutputCache`), `[OutputCache(Duration=60, Tags=[...])]` en los `GET` públicos, invalidado con `IOutputCacheStore.EvictByTagAsync` tras cada escritura en los tres servicios (inyectado por constructor).
+3. **CORS:** política `AllowAll` en `Program.cs` (documentado como solo válida en desarrollo, siguiendo el aviso explícito del material de José Luis).
+4. **Rate limiting:** API nativa `System.Threading.RateLimiting` (nunca el paquete de terceros, también por indicación explícita del material), `FixedWindowRateLimiter` de 100 peticiones/minuto por IP, 429 + `Retry-After` al superarlo.
+5. **Auditoría de accesos:** `JwtBearerEvents.OnAuthenticationFailed` registra con `LogWarning` cada intento de acceso con token ausente/caducado/manipulado.
+6. **Swagger + XMLDoc:** `GenerateDocumentationFile` en el csproj, `Swashbuckle.AspNetCore.Annotations`, XMLDoc (`summary`/`param`/`response`) y `[SwaggerOperation]`/`[SwaggerResponse]` en los cuatro controladores (Funko, Categoria, Proveedor, Auth).
+
+**Verificado en vivo** (no solo "compila"): 82/82 tests en verde; con `curl`, confirmado que la caché se invalida al momento (crear un Funko aparece en el siguiente `GET` sin esperar), que CORS responde con los headers correctos en un preflight, y que el rate limiter corta en 429 al superar el límite (ráfaga de 110 peticiones → 87 pasan, 23 bloqueadas).
+
+**Decisión tomada:** seguir al pie de la letra el código real de las soluciones de José Luis (`soluciones/21-ProductosOptimization`, `soluciones/22-ProductosComplete`, `24-documentacion.md`), no la teoría genérica de los `.md` cuando difiere del código (p. ej. el tipo de paginación se llama `PagedResponse<T>` en su código, aunque el `.md` lo llama `PagedResult<T>`).
+
+**Alternativas descartadas:** ninguna — todo lo de este bloque coincide exactamente con el patrón de José Luis, sin margen de interpretación propia.
+
+**Qué queda pendiente:** Bloques 2-8 (Redis, Mail, WebSocket, GraphQL, Mongo, Bruno), más el checklist final y la presentación en tres niveles.
+
 <!-- La siguiente entrada se añade aquí, con el mismo formato: Qué se hizo / Decisión y porqué / Alternativas descartadas / Pendiente -->
