@@ -30,6 +30,19 @@
       timeout: 5s
       retries: 10
 
+  mongo:
+    image: mongo:7.0
+    container_name: funkoapp-mongo
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
   funkoappi01:
     image: funkoappi01
     build:
@@ -40,13 +53,18 @@
         condition: service_healthy
       redis:
         condition: service_healthy
+      mongo:
+        condition: service_healthy
     ports:
       - "8090:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - DatabaseSettings__ConnectionString=Host=postgres;Port=5432;Database=funkos;Username=postgres;Password=postgres
       - Redis__ConnectionString=redis:6379,password=redis123
+      - Mongo__ConnectionString=mongodb://mongo:27017
+      - DatabaseSettings__CategoriaProvider=${DATABASESETTINGS__CATEGORIAPROVIDER:-EFCore}
 
 volumes:
   postgres_data:
   redis_data:
+  mongo_data:
