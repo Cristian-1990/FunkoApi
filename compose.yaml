@@ -7,11 +7,25 @@
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
-      - "5433:5432"
+      - "5434:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d funkos"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: funkoapp-redis
+    ports:
+      - "6390:6379"
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru --requirepass redis123
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "redis123", "ping"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -24,11 +38,15 @@
     depends_on:
       postgres:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     ports:
       - "8090:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - DatabaseSettings__ConnectionString=Host=postgres;Port=5432;Database=funkos;Username=postgres;Password=postgres
+      - Redis__ConnectionString=redis:6379,password=redis123
 
 volumes:
   postgres_data:
+  redis_data:
