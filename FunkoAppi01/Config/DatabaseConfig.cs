@@ -13,4 +13,11 @@ public class DatabaseConfig
 
     /// <summary>Cadena de conexión a la base de datos.</summary>
     public string ConnectionString { get; set; } = "Data Source=funkos.db";
+
+    /// <summary>
+    /// Motor del repositorio de Categoria: "EFCore" (por defecto, mismo motor que
+    /// Funko/Proveedor) o "Mongo". Independiente de <see cref="Provider"/> porque
+    /// solo afecta a Categoria, no a toda la aplicación.
+    /// </summary>
+    public string CategoriaProvider { get; set; } = "EFCore";
 }

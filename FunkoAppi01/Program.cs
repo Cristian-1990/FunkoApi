@@ -55,7 +55,7 @@ builder.Services.AddCors(options =>
 
 builder.Services
     .AddPersistence(builder.Configuration)
-    .AddRepositories()
+    .AddRepositories(builder.Configuration)
     .AddValidators()
     .AddServices()
     .AddAuthenticationJwt(builder.Configuration)
