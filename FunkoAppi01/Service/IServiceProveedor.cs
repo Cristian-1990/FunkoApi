@@ -12,4 +12,5 @@ public interface IServiceProveedor
     Task<Result<ProveedorDto, DomainError>> UpdateAsync(long id, UpdateProveedorDto request);
     Task<Result<bool, DomainError>> DeleteAsync(long id);
     Task<IEnumerable<ProveedorDto>> GetByNameAsync(string termino);
+    Task<PagedResponse<ProveedorDto>> GetPagedAsync(int page, int pageSize);
 }

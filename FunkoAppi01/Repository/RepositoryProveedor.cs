@@ -83,4 +83,14 @@ public class RepositoryProveedor(AppDbContext context) : IRepositoryProveedor
 
     public async Task<bool> ExistsByNameAsync(string nombre, long? excludeId = null) =>
         await context.Proveedores.AnyAsync(p => p.Id != excludeId && p.Nombre.ToLower() == nombre.ToLower());
+
+    public async Task<(IReadOnlyList<Proveedor> Items, int Total)> GetPagedAsync(int page, int pageSize)
+    {
+        var query = context.Proveedores.AsNoTracking().OrderBy(p => p.Id);
+
+        var total = await query.CountAsync();
+        var entidades = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+        return (entidades.Select(p => p.ToProveedor()).ToList(), total);
+    }
 }

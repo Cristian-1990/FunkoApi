@@ -11,4 +11,5 @@ public interface IRepositoryCategoria
     Task<bool> SoftDeleteAsync(long id);
     Task<IReadOnlyList<Categoria>> GetByNameAsync(string? nombre);
     Task<bool> ExistsByNameAsync(string nombre, long? excludeId = null);
+    Task<(IReadOnlyList<Categoria> Items, int Total)> GetPagedAsync(int page, int pageSize);
 }

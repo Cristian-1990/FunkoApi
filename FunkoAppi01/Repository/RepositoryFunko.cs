@@ -111,6 +111,16 @@ public class RepositoryFunko(AppDbContext context) : IRepositoryFunko
     public async Task<bool> ExistsByNameAsync(string nombre, long? excludeId = null) =>
         await context.Funkos.AnyAsync(f => f.Id != excludeId && f.Nombre.ToLower() == nombre.ToLower());
 
+    public async Task<(IReadOnlyList<Funko> Items, int Total)> GetPagedAsync(int page, int pageSize)
+    {
+        var query = context.Funkos.Include(f => f.Categoria).AsNoTracking().OrderBy(f => f.Id);
+
+        var total = await query.CountAsync();
+        var entidades = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+        return (entidades.Select(f => f.ToFunko()).ToList(), total);
+    }
+
     private async Task<FunkoEntity?> BuscarPorId(long id) =>
         await context.Funkos.Include(f => f.Categoria).FirstOrDefaultAsync(f => f.Id == id);
 

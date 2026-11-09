@@ -81,4 +81,14 @@ public class RepositoryCategoria(AppDbContext context) : IRepositoryCategoria
 
     public async Task<bool> ExistsByNameAsync(string nombre, long? excludeId = null) =>
         await context.Categorias.AnyAsync(c => c.Id != excludeId && c.Nombre.ToLower() == nombre.ToLower());
+
+    public async Task<(IReadOnlyList<Categoria> Items, int Total)> GetPagedAsync(int page, int pageSize)
+    {
+        var query = context.Categorias.AsNoTracking().OrderBy(c => c.Id);
+
+        var total = await query.CountAsync();
+        var entidades = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+        return (entidades.Select(c => c.ToCategoria()).ToList(), total);
+    }
 }

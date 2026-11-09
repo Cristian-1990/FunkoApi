@@ -13,4 +13,5 @@ public interface IServiceFunko
     Task<Result<FunkoDto, DomainError>> UpdatePriceAsync(long id, decimal precio);
     Task<Result<bool, DomainError>> DeleteAsync(long id);
     Task<IEnumerable<FunkoDto>> GetByNameAsync(string termino);
+    Task<PagedResponse<FunkoDto>> GetPagedAsync(int page, int pageSize);
 }

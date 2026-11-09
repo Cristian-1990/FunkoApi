@@ -47,6 +47,20 @@ public static class AuthenticationConfig
                     ClockSkew = TimeSpan.Zero,
                     RoleClaimType = "role"
                 };
+
+                // Auditoría: deja constancia de cada intento de acceso con un token
+                // ausente, caducado o manipulado. No decide nada (eso lo hace
+                // [Authorize]); solo registra para poder detectar abusos.
+                options.Events = new JwtBearerEvents
+                {
+                    OnAuthenticationFailed = context =>
+                    {
+                        var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
+                        logger.LogWarning("Fallo de autenticación en {Path}: {Message}",
+                            context.HttpContext.Request.Path, context.Exception.Message);
+                        return Task.CompletedTask;
+                    }
+                };
             });
 
         services.AddAuthorization();

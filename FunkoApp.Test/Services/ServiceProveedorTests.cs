@@ -6,6 +6,7 @@ using FunkoAppi01.Models;
 using FunkoAppi01.Repository;
 using FunkoAppi01.Service;
 using FunkoAppi01.Validators;
+using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
@@ -20,6 +21,7 @@ public class ServiceProveedorTests
 {
     private Mock<IRepositoryProveedor> _mockRepository = null!;
     private Mock<IProveedorValidator> _mockValidator = null!;
+    private Mock<IOutputCacheStore> _mockOutputCacheStore = null!;
     private ServiceProveedor _service = null!;
 
     [SetUp]
@@ -27,10 +29,12 @@ public class ServiceProveedorTests
     {
         _mockRepository = new Mock<IRepositoryProveedor>();
         _mockValidator = new Mock<IProveedorValidator>();
+        _mockOutputCacheStore = new Mock<IOutputCacheStore>();
         _service = new ServiceProveedor(
             _mockRepository.Object,
             _mockValidator.Object,
-            new Mock<ILogger<ServiceProveedor>>().Object);
+            new Mock<ILogger<ServiceProveedor>>().Object,
+            _mockOutputCacheStore.Object);
     }
 
     private static Proveedor CrearProveedor(long id = 1, string nombre = "Funko Inc") => new()

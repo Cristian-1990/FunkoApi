@@ -6,6 +6,7 @@ using FunkoAppi01.Models;
 using FunkoAppi01.Repository;
 using FunkoAppi01.Service;
 using FunkoAppi01.Validators;
+using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
@@ -20,6 +21,7 @@ public class ServiceCategoriaTests
 {
     private Mock<IRepositoryCategoria> _mockRepository = null!;
     private Mock<ICategoriaValidator> _mockValidator = null!;
+    private Mock<IOutputCacheStore> _mockOutputCacheStore = null!;
     private ServiceCategoria _service = null!;
 
     [SetUp]
@@ -27,10 +29,12 @@ public class ServiceCategoriaTests
     {
         _mockRepository = new Mock<IRepositoryCategoria>();
         _mockValidator = new Mock<ICategoriaValidator>();
+        _mockOutputCacheStore = new Mock<IOutputCacheStore>();
         _service = new ServiceCategoria(
             _mockRepository.Object,
             _mockValidator.Object,
-            new Mock<ILogger<ServiceCategoria>>().Object);
+            new Mock<ILogger<ServiceCategoria>>().Object,
+            _mockOutputCacheStore.Object);
     }
 
     private static Categoria CrearCategoria(long id = 1, string nombre = "Anime") => new()
