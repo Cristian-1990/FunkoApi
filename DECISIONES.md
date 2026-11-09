@@ -472,4 +472,16 @@ Normas de este documento (ver `CLAUDE.md` en `Entorno-Servidor/`, puntos 7 y 9):
 
 **Qué queda pendiente:** Bloques 5-8 (WebSocket, GraphQL, Mongo, Bruno), checklist final, presentación en tres niveles.
 
+## Entrada 18. Bloque 5: WebSocket en tiempo real con SignalR
+
+**Qué se hizo:** `FunkosHub` (SignalR, no WebSocket nativo — el propio material de José Luis dice "si no sabes cuál elegir, usa SignalR"), con el patrón exacto de `soluciones/16-ProductosRealTime`: grupo `admins` al conectar si el usuario tiene ese rol, `JoinCategoriaGroup`/`LeaveCategoriaGroup`, `Ping`/`Pong`. `ServiceFunko` notifica al grupo `admins` (`FunkoCreado`/`FunkoActualizado`/`FunkoEliminado`) tras cada escritura, fire-and-forget con try/catch, igual que el email. Corregido un hueco real entre la teoría y el código de José Luis: el `.md` dice que `OnMessageReceived` (JWT por query string) es "imprescindible" para que el Hub autentique, pero no está en el código de su solución — añadido a mano siguiendo el `.md`. También corregido el CORS del Bloque 1: `AllowAnyOrigin()` es incompatible con `AllowCredentials()` (que SignalR necesita), cambiado a `SetIsOriginAllowed(_ => true)`.
+
+**Verificado en vivo de verdad, no simulado:** escrito un cliente SignalR real en Node.js (paquete oficial `@microsoft/signalr`), conectado con el JWT por query string, suscrito al evento `FunkoCreado`; al crear un Funko por REST en paralelo, el cliente recibió la notificación con el payload exacto en menos de un segundo.
+
+**Decisión tomada:** solo se notifica al grupo `admins`, no por categoría. El reto de José Luis habla de notificar "al propietario" de un Funko, pero nuestro dominio no tiene ese concepto (a diferencia de `Producto.UsuarioId` en su ejemplo) — y el `CategoriaId` real tampoco llega hasta el `FunkoDto`/modelo de dominio (la Categoria se aplana a texto, decisión ya tomada en la Entrada 3). Extender esto exigiría cambiar el modelo de dominio de Funko, que es justo lo que está en juego sin resolver para el Bloque 6 (GraphQL) — se decide no tocarlo aquí.
+
+**Alternativas descartadas:** WebSocket nativo (`app.UseWebSockets()`) en vez de SignalR. Descartado: el material lo marca como "solo informativo", SignalR es el camino recomendado y tiene reconexión automática, grupos y mejor soporte de cliente.
+
+**Qué queda pendiente:** Bloques 6-8 (GraphQL, Mongo, Bruno), checklist final, presentación en tres niveles.
+
 <!-- La siguiente entrada se añade aquí, con el mismo formato: Qué se hizo / Decisión y porqué / Alternativas descartadas / Pendiente -->
