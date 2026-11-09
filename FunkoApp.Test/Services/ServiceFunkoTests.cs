@@ -6,6 +6,7 @@ using FunkoAppi01.Errors;
 using FunkoAppi01.Models;
 using FunkoAppi01.Repository;
 using FunkoAppi01.Service;
+using FunkoAppi01.Service.Email;
 using FunkoAppi01.Validators;
 using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.Extensions.Logging;
@@ -26,6 +27,7 @@ public class ServiceFunkoTests
     private Mock<IFunkoValidator> _mockValidator = null!;
     private Mock<IOutputCacheStore> _mockOutputCacheStore = null!;
     private Mock<ICacheService> _mockCache = null!;
+    private Mock<IEmailService> _mockEmailService = null!;
     private ServiceFunko _service = null!;
 
     [SetUp]
@@ -41,12 +43,14 @@ public class ServiceFunkoTests
         _mockCache.Setup(c => c.GetOrSetAsync(
                 It.IsAny<string>(), It.IsAny<Func<Task<List<FunkoDto>>>>(), It.IsAny<TimeSpan?>(), It.IsAny<CancellationToken>()))
             .Returns<string, Func<Task<List<FunkoDto>>>, TimeSpan?, CancellationToken>((_, factory, _, _) => factory());
+        _mockEmailService = new Mock<IEmailService>();
         _service = new ServiceFunko(
             _mockRepository.Object,
             _mockValidator.Object,
             new Mock<ILogger<ServiceFunko>>().Object,
             _mockOutputCacheStore.Object,
-            _mockCache.Object);
+            _mockCache.Object,
+            _mockEmailService.Object);
     }
 
     private static Funko CrearFunko(long id = 1, string nombre = "Pikachu") => new()
