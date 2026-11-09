@@ -3,12 +3,14 @@ using FluentAssertions;
 using FunkoAppi01.Cache;
 using FunkoAppi01.Dto;
 using FunkoAppi01.Errors;
+using FunkoAppi01.Hubs;
 using FunkoAppi01.Models;
 using FunkoAppi01.Repository;
 using FunkoAppi01.Service;
 using FunkoAppi01.Service.Email;
 using FunkoAppi01.Validators;
 using Microsoft.AspNetCore.OutputCaching;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
@@ -28,6 +30,7 @@ public class ServiceFunkoTests
     private Mock<IOutputCacheStore> _mockOutputCacheStore = null!;
     private Mock<ICacheService> _mockCache = null!;
     private Mock<IEmailService> _mockEmailService = null!;
+    private Mock<IHubContext<FunkosHub>> _mockHubContext = null!;
     private ServiceFunko _service = null!;
 
     [SetUp]
@@ -44,13 +47,24 @@ public class ServiceFunkoTests
                 It.IsAny<string>(), It.IsAny<Func<Task<List<FunkoDto>>>>(), It.IsAny<TimeSpan?>(), It.IsAny<CancellationToken>()))
             .Returns<string, Func<Task<List<FunkoDto>>>, TimeSpan?, CancellationToken>((_, factory, _, _) => factory());
         _mockEmailService = new Mock<IEmailService>();
+
+        var mockClientProxy = new Mock<IClientProxy>();
+        mockClientProxy.Setup(p => p.SendCoreAsync(
+                It.IsAny<string>(), It.IsAny<object[]>(), It.IsAny<CancellationToken>()))
+            .Returns(Task.CompletedTask);
+        var mockClients = new Mock<IHubClients>();
+        mockClients.Setup(c => c.Group(It.IsAny<string>())).Returns(mockClientProxy.Object);
+        _mockHubContext = new Mock<IHubContext<FunkosHub>>();
+        _mockHubContext.Setup(h => h.Clients).Returns(mockClients.Object);
+
         _service = new ServiceFunko(
             _mockRepository.Object,
             _mockValidator.Object,
             new Mock<ILogger<ServiceFunko>>().Object,
             _mockOutputCacheStore.Object,
             _mockCache.Object,
-            _mockEmailService.Object);
+            _mockEmailService.Object,
+            _mockHubContext.Object);
     }
 
     private static Funko CrearFunko(long id = 1, string nombre = "Pikachu") => new()

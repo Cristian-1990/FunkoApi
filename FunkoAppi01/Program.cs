@@ -1,6 +1,7 @@
 using System.Reflection;
 using System.Text.Json;
 using FunkoAppi01.Entity;
+using FunkoAppi01.Hubs;
 using FunkoAppi01.Infraestructure;
 using FunkoAppi01.Middleware;
 using FunkoAppi01.Repository;
@@ -44,8 +45,12 @@ builder.Services.AddCors(options =>
 {
     // "AllowAll" solo vale para desarrollo. En producción habría que restringir
     // con WithOrigins(...) a los dominios reales del cliente.
+    // SetIsOriginAllowed(_ => true) en vez de AllowAnyOrigin(): SignalR necesita
+    // AllowCredentials() para la negociación de la conexión, y AllowAnyOrigin()
+    // es incompatible con AllowCredentials() (ASP.NET Core lo rechaza en tiempo
+    // de ejecución si se combinan).
     options.AddPolicy("AllowAll", policy =>
-        policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+        policy.SetIsOriginAllowed(_ => true).AllowAnyMethod().AllowAnyHeader().AllowCredentials());
 });
 
 builder.Services
@@ -57,7 +62,8 @@ builder.Services
     .AddOutputCacheConfig()
     .AddRateLimitConfig()
     .AddCache(builder.Configuration, builder.Environment)
-    .AddEmail(builder.Environment);
+    .AddEmail(builder.Environment)
+    .AddSignalRConfiguration();
 
 var app = builder.Build();
 
@@ -97,6 +103,7 @@ app.UseAuthorization();
 app.UseOutputCacheConfig();
 
 app.MapControllers();
+app.MapHub<FunkosHub>("/hubs/funkos").RequireAuthorization();
 
 app.Run();
 
