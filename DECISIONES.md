@@ -508,4 +508,14 @@ Normas de este documento (ver `CLAUDE.md` en `Entorno-Servidor/`, puntos 7 y 9):
 
 **Qué queda pendiente:** Bloque 8 (Bruno), checklist final, presentación en tres niveles.
 
+## Entrada 21. Bloque 8: colección Bruno
+
+**Qué se hizo:** colección Bruno en `FunkoAppi01/Bruno/FunkoApp/` (la carpeta ya estaba reservada en el `.csproj` desde el primer commit de Jesús — resuelto el misterio de la Entrada anterior sobre por qué aparecía en Rider), con el mismo formato `.yml` del repositorio de José Luis (`opencollection.yml`, `environments/Local.yml` con la variable `url`, una petición por fichero). Cubre Auth (Login, Signup, Me), Funko (GetAll, GetById, GetPaged, Search, Create, Update, Delete), Categoria (GetAll, Create, Delete) y Proveedor (GetAll, Create) — no cada endpoint de cada recurso, pero sí una muestra representativa del CRUD completo en los tres.
+
+**Decisión tomada:** autenticación explícita por variable (`{{token}}`, se pega a mano tras ejecutar Login) en vez de scripts de captura automática. El ejemplo de referencia de José Luis tampoco demuestra esa automatización (su `Me.yml` lleva un token pegado a mano, no capturado por script), así que no se inventa una mecánica que no está documentada en ningún sitio.
+
+**Alternativas descartadas:** ninguna.
+
+**Qué queda pendiente:** checklist final de requisitos y presentación en tres niveles — los dos últimos pendientes de este bloque de trabajo.
+
 <!-- La siguiente entrada se añade aquí, con el mismo formato: Qué se hizo / Decisión y porqué / Alternativas descartadas / Pendiente -->
