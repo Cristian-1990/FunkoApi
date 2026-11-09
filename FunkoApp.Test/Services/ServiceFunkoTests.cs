@@ -1,5 +1,6 @@
 using CSharpFunctionalExtensions;
 using FluentAssertions;
+using FunkoAppi01.Cache;
 using FunkoAppi01.Dto;
 using FunkoAppi01.Errors;
 using FunkoAppi01.Models;
@@ -15,6 +16,8 @@ namespace FunkoApp.Test.Services;
 
 /// <summary>
 /// Tests unitarios de ServiceFunko. El repositorio y el validador van simulados con Moq.
+/// La caché se simula en MISS permanente: siempre ejecuta la factory, igual que si
+/// estuviera vacía.
 /// </summary>
 [TestFixture]
 public class ServiceFunkoTests
@@ -22,6 +25,7 @@ public class ServiceFunkoTests
     private Mock<IRepositoryFunko> _mockRepository = null!;
     private Mock<IFunkoValidator> _mockValidator = null!;
     private Mock<IOutputCacheStore> _mockOutputCacheStore = null!;
+    private Mock<ICacheService> _mockCache = null!;
     private ServiceFunko _service = null!;
 
     [SetUp]
@@ -30,11 +34,19 @@ public class ServiceFunkoTests
         _mockRepository = new Mock<IRepositoryFunko>();
         _mockValidator = new Mock<IFunkoValidator>();
         _mockOutputCacheStore = new Mock<IOutputCacheStore>();
+        _mockCache = new Mock<ICacheService>();
+        _mockCache.Setup(c => c.GetOrSetAsync(
+                It.IsAny<string>(), It.IsAny<Func<Task<FunkoDto>>>(), It.IsAny<TimeSpan?>(), It.IsAny<CancellationToken>()))
+            .Returns<string, Func<Task<FunkoDto>>, TimeSpan?, CancellationToken>((_, factory, _, _) => factory());
+        _mockCache.Setup(c => c.GetOrSetAsync(
+                It.IsAny<string>(), It.IsAny<Func<Task<List<FunkoDto>>>>(), It.IsAny<TimeSpan?>(), It.IsAny<CancellationToken>()))
+            .Returns<string, Func<Task<List<FunkoDto>>>, TimeSpan?, CancellationToken>((_, factory, _, _) => factory());
         _service = new ServiceFunko(
             _mockRepository.Object,
             _mockValidator.Object,
             new Mock<ILogger<ServiceFunko>>().Object,
-            _mockOutputCacheStore.Object);
+            _mockOutputCacheStore.Object,
+            _mockCache.Object);
     }
 
     private static Funko CrearFunko(long id = 1, string nombre = "Pikachu") => new()

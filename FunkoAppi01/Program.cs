@@ -55,7 +55,8 @@ builder.Services
     .AddServices()
     .AddAuthenticationJwt(builder.Configuration)
     .AddOutputCacheConfig()
-    .AddRateLimitConfig();
+    .AddRateLimitConfig()
+    .AddCache(builder.Configuration, builder.Environment);
 
 var app = builder.Build();
 
