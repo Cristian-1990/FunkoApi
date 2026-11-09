@@ -496,4 +496,16 @@ Normas de este documento (ver `CLAUDE.md` en `Entorno-Servidor/`, puntos 7 y 9):
 
 **Qué queda pendiente:** probar las subscriptions GraphQL con un cliente real (como se hizo con SignalR). Bloque 7 (Mongo), Bloque 8 (Bruno), checklist final, presentación en tres niveles.
 
+## Entrada 20. Bloque 7: MongoDB como motor alternativo para Categoria
+
+**Qué se hizo:** `RepositoryCategoriaMongo` implementa la misma interfaz `IRepositoryCategoria` que ya usa EF Core — el servicio y el controlador no cambian ni una línea. Selección por configuración: `DatabaseSettings:CategoriaProvider` = `"EFCore"` (por defecto) o `"Mongo"`, resuelto en `RepositoriesConfig.AddRepositories`. Documento con `[BsonId] ObjectId` propio de Mongo más un `Id` numérico (`long`) para no romper DTOs/rutas (`{id:long}`) ni el resto de la aplicación, generado con un contador atómico (`FindOneAndUpdate $inc` sobre una colección `contadores`) porque Mongo no tiene autoincremento nativo. Mongo añadido a `compose.yaml` (imagen `mongo:7.0`, healthcheck), con el proveedor también parametrizado vía variable de entorno (`DATABASESETTINGS__CATEGORIAPROVIDER`).
+
+**Decisión tomada — desviación consciente del reto de José Luis:** su material trata Mongo como una solución nueva y separada (`ProductosMongo.slnx` propio), con Categoria embebida dentro del documento Funko y Proveedor referenciado. Con el plazo del jueves, montar un segundo proyecto completo no compensa frente a demostrar la integración real dentro de la API que ya existe, reutilizando el mismo patrón Dev/Prod que ya usamos para SQLite/PostgreSQL y Redis. Se declara explícitamente como adaptación, no como el camino "oficial" del material.
+
+**Verificado en vivo con MongoDB real en Docker** (no solo compilado): forzado `CategoriaProvider=Mongo`, creada una Categoria por la API REST, confirmado con `mongosh` que el documento existe de verdad dentro de Mongo (`id: Long('1')`, generado por el contador). Probados también duplicado (409), actualización (200), borrado lógico (204, desaparece del listado) — y confirmado que Funko sigue funcionando sin problema contra PostgreSQL al mismo tiempo (coexistencia real de dos motores).
+
+**Alternativas descartadas:** Cassandra (Entrada de investigación previa): descartada por Cristian desde el principio por su coste mucho mayor (rediseño del acceso a datos tabla-por-consulta). Proyecto Mongo separado siguiendo el reto al pie de la letra: descartado por tiempo, ver arriba.
+
+**Qué queda pendiente:** Bloque 8 (Bruno), checklist final, presentación en tres niveles.
+
 <!-- La siguiente entrada se añade aquí, con el mismo formato: Qué se hizo / Decisión y porqué / Alternativas descartadas / Pendiente -->
