@@ -1,0 +1,15 @@
+info:
+  name: GetById
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: "{{url}}/Funko/1"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

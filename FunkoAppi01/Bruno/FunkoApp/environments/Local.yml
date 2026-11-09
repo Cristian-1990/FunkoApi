@@ -1,0 +1,9 @@
+name: Local
+variables:
+  - name: url
+    value: http://localhost:5230/api
+    description: url de la api en local (perfil Development)
+  - name: token
+    value: ""
+    description: pega aqui el accessToken que devuelve Auth/Login
+

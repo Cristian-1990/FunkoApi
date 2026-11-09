@@ -1,0 +1,19 @@
+info:
+  name: Delete
+  type: http
+  seq: 7
+
+http:
+  method: DELETE
+  url: "{{url}}/Funko/1"
+  headers:
+    - name: Authorization
+      value: "Bearer {{token}}"
+      enabled: true
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

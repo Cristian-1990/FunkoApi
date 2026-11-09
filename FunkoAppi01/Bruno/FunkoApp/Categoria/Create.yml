@@ -1,0 +1,25 @@
+info:
+  name: Create
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{url}}/Categoria"
+  headers:
+    - name: Authorization
+      value: "Bearer {{token}}"
+      enabled: true
+  body:
+    type: json
+    data: |-
+      {
+        "nombre": "{{$randomNoun}}"
+      }
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
