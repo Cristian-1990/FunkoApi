@@ -8,6 +8,7 @@ namespace FunkoAppi01.Dto;
 /// <param name="Precio">Precio de venta.</param>
 /// <param name="Stock">Unidades disponibles.</param>
 /// <param name="Categoria">Categoría a la que pertenece.</param>
+/// <param name="Proveedor">Proveedor que lo suministra (opcional).</param>
 /// <param name="CreatedAt">Fecha de creación.</param>
 /// <param name="UpdatedAt">Fecha de la última actualización.</param>
 public record FunkoDto(
@@ -16,6 +17,7 @@ public record FunkoDto(
     decimal Precio,
     int Stock,
     string Categoria,
+    string? Proveedor,
     DateTime CreatedAt,
     DateTime? UpdatedAt
 );

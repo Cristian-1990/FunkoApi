@@ -15,7 +15,8 @@ public static class FunkoMapper
         Nombre = request.Nombre,
         Precio = request.Precio,
         Stock = request.Stock,
-        Categoria = request.Categoria
+        Categoria = request.Categoria,
+        Proveedor = request.Proveedor
     };
 
     /// <summary>Convierte una petición de actualización en Funko.</summary>
@@ -24,7 +25,8 @@ public static class FunkoMapper
         Nombre = request.Nombre,
         Precio = request.Precio,
         Stock = request.Stock,
-        Categoria = request.Categoria
+        Categoria = request.Categoria,
+        Proveedor = request.Proveedor
     };
 
     /// <summary>Convierte un Funko en el DTO de respuesta.</summary>
@@ -34,6 +36,7 @@ public static class FunkoMapper
         funko.Precio,
         funko.Stock,
         funko.Categoria,
+        funko.Proveedor,
         funko.CreatedAt,
         funko.UpdatedAt);
 }

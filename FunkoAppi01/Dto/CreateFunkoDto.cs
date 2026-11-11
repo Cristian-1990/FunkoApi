@@ -9,6 +9,7 @@ namespace FunkoAppi01.Dto;
 /// <param name="Precio">Precio de venta.</param>
 /// <param name="Stock">Unidades disponibles.</param>
 /// <param name="Categoria">Categoría a la que pertenece.</param>
+/// <param name="Proveedor">Proveedor que lo suministra (opcional).</param>
 public record CreateFunkoDto(
     [Required(ErrorMessage = "El nombre es obligatorio")]
     [StringLength(100, ErrorMessage = "El nombre no puede superar los 100 caracteres")]
@@ -21,5 +22,7 @@ public record CreateFunkoDto(
     int Stock,
 
     [Required(ErrorMessage = "La categoría es obligatoria")]
-    string Categoria
+    string Categoria,
+
+    string? Proveedor = null
 );
