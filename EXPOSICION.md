@@ -21,7 +21,7 @@ hecho, y la **explicación en tres niveles** para que la domines de menos a más
 | 8 | Configuración y logs (Serilog) | ✅ Hecho |
 | 9 | Persistencia real con EF Core | ✅ Hecho (SQLite dev / PostgreSQL prod) |
 | 10 | Seguridad JWT + BCrypt | ✅ Hecho |
-| 11 | Documentación Swagger + tests | ✅ Hecho (82 tests unitarios + 14 de integración) |
+| 11 | Documentación Swagger + tests | ✅ Hecho (113 tests, unitarios + de integración + cobertura al 53.8%) |
 | 12 | Despliegue con Docker | ✅ Hecho |
 
 **11 de 12. La única omitida está declarada y justificada, no es un olvido.**
@@ -105,7 +105,7 @@ de configuración, no de código: el controlador y el servicio nunca se enteran 
 detrás.
 
 **Todo dockerizado y probado de verdad.** Un `docker compose up` levanta la API, PostgreSQL,
-Redis y MongoDB juntos. 82 tests automáticos (unitarios con Moq + de integración con la API real
+Redis y MongoDB juntos. 113 tests automáticos (unitarios con Moq + de integración con la API real
 levantada). Y nada de esto lo doy por bueno porque "compile": cada pieza la he arrancado y
 probado en caliente antes de darla por terminada.
 

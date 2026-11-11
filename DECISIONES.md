@@ -549,4 +549,19 @@ Normas de este documento (ver `CLAUDE.md` en `Entorno-Servidor/`, puntos 7 y 9):
 
 **Qué queda pendiente:** nada bloqueante. El proyecto se considera cerrado para la entrega de mañana.
 
+## Entrada 24. Cobertura de tests real, comparando con `RepositorioRemoto`
+
+**Qué se hizo:** Cristian pidió revisar `RepositorioRemoto` (la primera entrega que salió bien) para ver si teníamos el mismo nivel de documentación — en concreto, preguntó por casos de uso y cobertura de tests.
+
+- **Casos de uso:** revisado el README de `RepositorioRemoto` a fondo — no tiene ninguna sección de casos de uso. Por la regla de oro (seguir su estilo, no inventar), no se añade: no es parte del patrón del profesor.
+- **Cobertura de tests:** hueco real. Teníamos `coverlet.collector` como dependencia pero nunca se había generado el informe. Generado con las mismas herramientas exactas que usa `RepositorioRemoto` (`coverlet.runsettings` + `dotnet test --collect:"XPlat Code Coverage"` + `reportgenerator`, informe HTML en `docs/coverage/`, igual que él). Resultado inicial: **45.5%** — mucho más bajo que su 87.1%, y se sabía exactamente por qué: `CategoriaController`/`ProveedorController` y sus repositorios estaban al 0%, sin ningún test (pendiente ya anotado en la Entrada 13).
+
+**Cerrado el hueco más grande:** añadidos `RepositoryCategoriaTests`/`RepositoryProveedorTests` (SQLite real en memoria, mismo patrón que `RepositoryFunkoTests`) y `CategoriaControllerIntegrationTests`/`ProveedorControllerIntegrationTests` (`WebApplicationFactory`, mismo patrón que `FunkoControllerIntegrationTests`, verificando además que la escritura exige rol Admin en los dos, no solo estar autenticado). 31 tests nuevos, **113 en total**, cobertura subida a **53.8%**.
+
+**Decisión tomada:** no perseguir el 87% de `RepositorioRemoto` a toda costa. Lo que queda sin cubrir (GraphQL, SignalR, el repositorio Mongo) son los bloques añadidos en los extras, verificados en vivo con clientes reales (`curl`, un cliente SignalR, uno de subscriptions GraphQL, `mongosh`) — una verificación distinta pero igual de real que un test automático, y escribir tests para HotChocolate/SignalR desde cero no compensaba el tiempo disponible a horas de la exposición.
+
+**Verificado:** 113/113 tests en verde, build limpio, informe navegable en `docs/coverage/index.html` (committeado, igual que hace `RepositorioRemoto`; la carpeta `TestResults/` con el XML crudo sí se ignora, también igual que él).
+
+**Qué queda pendiente:** nada bloqueante. Documentado también en el README (badge de cobertura, sección "Cobertura", tabla de tests actualizada, y la sección "Qué queda fuera" puesta al día tras los últimos bloques).
+
 <!-- La siguiente entrada se añade aquí, con el mismo formato: Qué se hizo / Decisión y porqué / Alternativas descartadas / Pendiente -->
