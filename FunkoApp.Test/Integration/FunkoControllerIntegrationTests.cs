@@ -94,6 +94,82 @@ public class FunkoControllerIntegrationTests
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.NoContent);
         }
+
+        [Test]
+        public async Task Update_Existente_DeberiaDevolverOkConLosNuevosDatos()
+        {
+            // Arrange
+            _client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", await ObtenerTokenUserAsync());
+            var creado = await _client.PostAsJsonAsync("/api/Funko",
+                new CreateFunkoDto("Eevee", 10m, 2, "Pokemon"));
+            var funko = await creado.Content.ReadFromJsonAsync<FunkoDto>();
+
+            // Act
+            var response = await _client.PutAsJsonAsync($"/api/Funko/{funko!.Id}",
+                new UpdateFunkoDto("Vaporeon", 18m, 1, "Pokemon"));
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var actualizado = await response.Content.ReadFromJsonAsync<FunkoDto>();
+            actualizado!.Nombre.Should().Be("Vaporeon");
+        }
+
+        [Test]
+        public async Task UpdatePrice_Existente_DeberiaDevolverOkConElNuevoPrecio()
+        {
+            // Arrange
+            _client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", await ObtenerTokenUserAsync());
+            var creado = await _client.PostAsJsonAsync("/api/Funko",
+                new CreateFunkoDto("Jolteon", 10m, 2, "Pokemon"));
+            var funko = await creado.Content.ReadFromJsonAsync<FunkoDto>();
+
+            // Act
+            var response = await _client.PatchAsJsonAsync($"/api/Funko/{funko!.Id}", 25m);
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var actualizado = await response.Content.ReadFromJsonAsync<FunkoDto>();
+            actualizado!.Precio.Should().Be(25m);
+        }
+
+        [Test]
+        public async Task Search_DeberiaDevolverSoloLosQueCoincidenConElTexto()
+        {
+            // Arrange
+            _client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", await ObtenerTokenUserAsync());
+            await _client.PostAsJsonAsync("/api/Funko", new CreateFunkoDto("Articuno", 30m, 1, "Pokemon"));
+            await _client.PostAsJsonAsync("/api/Funko", new CreateFunkoDto("Zapdos", 30m, 1, "Pokemon"));
+
+            // Act
+            var response = await _client.GetAsync("/api/Funko/search?nombre=Arti");
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var funkos = await response.Content.ReadFromJsonAsync<List<FunkoDto>>();
+            funkos.Should().ContainSingle(f => f.Nombre == "Articuno");
+        }
+
+        [Test]
+        public async Task GetPaged_DeberiaDevolverLosMetadatosDePaginacion()
+        {
+            // Arrange
+            _client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", await ObtenerTokenUserAsync());
+            await _client.PostAsJsonAsync("/api/Funko", new CreateFunkoDto("Moltres", 30m, 1, "Pokemon"));
+
+            // Act
+            var response = await _client.GetAsync("/api/Funko/paged?page=1&pageSize=1");
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var pagina = await response.Content.ReadFromJsonAsync<PagedResponse<FunkoDto>>();
+            pagina!.Pagination.Page.Should().Be(1);
+            pagina.Pagination.PageSize.Should().Be(1);
+            pagina.Data.Should().HaveCount(1);
+        }
     }
 
     [TestFixture]

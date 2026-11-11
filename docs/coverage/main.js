@@ -290,16 +290,16 @@ var assemblies = [
   {
     "name": "FunkoAppi01",
     "classes": [
-      { "name": "FunkoAppi01.Cache.MemoryCacheService", "rp": "FunkoAppi01_MemoryCacheService.html", "cl": 20, "ucl": 8, "cal": 28, "tl": 60, "cb": 3, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "FunkoAppi01.Cache.RedisCacheService", "rp": "FunkoAppi01_RedisCacheService.html", "cl": 0, "ucl": 34, "cal": 34, "tl": 65, "cb": 0, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "FunkoAppi01.Cache.MemoryCacheService", "rp": "FunkoAppi01_MemoryCacheService.html", "cl": 27, "ucl": 1, "cal": 28, "tl": 60, "cb": 6, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "FunkoAppi01.Cache.RedisCacheService", "rp": "FunkoAppi01_RedisCacheService.html", "cl": 32, "ucl": 2, "cal": 34, "tl": 65, "cb": 6, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Config.CacheOptions", "rp": "FunkoAppi01_CacheOptions.html", "cl": 2, "ucl": 0, "cal": 2, "tl": 16, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Config.DatabaseConfig", "rp": "FunkoAppi01_DatabaseConfig.html", "cl": 3, "ucl": 0, "cal": 3, "tl": 23, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Config.JwtConfig", "rp": "FunkoAppi01_JwtConfig.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 22, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "FunkoAppi01.Config.MongoConfig", "rp": "FunkoAppi01_MongoConfig.html", "cl": 0, "ucl": 2, "cal": 2, "tl": 14, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "FunkoAppi01.Config.MongoConfig", "rp": "FunkoAppi01_MongoConfig.html", "cl": 2, "ucl": 0, "cal": 2, "tl": 14, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Controller.AuthController", "rp": "FunkoAppi01_AuthController.html", "cl": 34, "ucl": 1, "cal": 35, "tl": 83, "cb": 11, "tb": 16, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "FunkoAppi01.Controller.CategoriaController", "rp": "FunkoAppi01_CategoriaController.html", "cl": 25, "ucl": 17, "cal": 42, "tl": 150, "cb": 4, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "FunkoAppi01.Controller.FunkoController", "rp": "FunkoAppi01_FunkoController.html", "cl": 25, "ucl": 18, "cal": 43, "tl": 160, "cb": 4, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "FunkoAppi01.Controller.ProveedorController", "rp": "FunkoAppi01_ProveedorController.html", "cl": 25, "ucl": 17, "cal": 42, "tl": 150, "cb": 4, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "FunkoAppi01.Controller.CategoriaController", "rp": "FunkoAppi01_CategoriaController.html", "cl": 29, "ucl": 13, "cal": 42, "tl": 150, "cb": 6, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "FunkoAppi01.Controller.FunkoController", "rp": "FunkoAppi01_FunkoController.html", "cl": 30, "ucl": 13, "cal": 43, "tl": 160, "cb": 6, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "FunkoAppi01.Controller.ProveedorController", "rp": "FunkoAppi01_ProveedorController.html", "cl": 29, "ucl": 13, "cal": 42, "tl": 150, "cb": 6, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Dto.AuthResponseDto", "rp": "FunkoAppi01_AuthResponseDto.html", "cl": 8, "ucl": 0, "cal": 8, "tl": 19, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Dto.CategoriaDto", "rp": "FunkoAppi01_CategoriaDto.html", "cl": 6, "ucl": 0, "cal": 6, "tl": 15, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Dto.CreateCategoriaDto", "rp": "FunkoAppi01_CreateCategoriaDto.html", "cl": 5, "ucl": 0, "cal": 5, "tl": 13, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
@@ -307,8 +307,8 @@ var assemblies = [
       { "name": "FunkoAppi01.Dto.CreateProveedorDto", "rp": "FunkoAppi01_CreateProveedorDto.html", "cl": 9, "ucl": 0, "cal": 9, "tl": 18, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Dto.FunkoDto", "rp": "FunkoAppi01_FunkoDto.html", "cl": 10, "ucl": 0, "cal": 10, "tl": 23, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Dto.LoginDto", "rp": "FunkoAppi01_LoginDto.html", "cl": 8, "ucl": 0, "cal": 8, "tl": 17, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "FunkoAppi01.Dto.PagedResponse\u003CT\u003E", "rp": "FunkoAppi01_PagedResponse_1.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 19, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "FunkoAppi01.Dto.PageMetadata", "rp": "FunkoAppi01_PageMetadata.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 19, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "FunkoAppi01.Dto.PagedResponse\u003CT\u003E", "rp": "FunkoAppi01_PagedResponse_1.html", "cl": 1, "ucl": 0, "cal": 1, "tl": 19, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "FunkoAppi01.Dto.PageMetadata", "rp": "FunkoAppi01_PageMetadata.html", "cl": 1, "ucl": 0, "cal": 1, "tl": 19, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Dto.ProveedorDto", "rp": "FunkoAppi01_ProveedorDto.html", "cl": 7, "ucl": 0, "cal": 7, "tl": 17, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Dto.SignupDto", "rp": "FunkoAppi01_SignupDto.html", "cl": 13, "ucl": 0, "cal": 13, "tl": 23, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Dto.UpdateCategoriaDto", "rp": "FunkoAppi01_UpdateCategoriaDto.html", "cl": 5, "ucl": 0, "cal": 5, "tl": 13, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
@@ -325,50 +325,48 @@ var assemblies = [
       { "name": "FunkoAppi01.Errors.DomainError", "rp": "FunkoAppi01_DomainError.html", "cl": 6, "ucl": 3, "cal": 9, "tl": 90, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Errors.FunkoErrors", "rp": "FunkoAppi01_FunkoErrors.html", "cl": 3, "ucl": 0, "cal": 3, "tl": 90, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Errors.ProveedorErrors", "rp": "FunkoAppi01_ProveedorErrors.html", "cl": 3, "ucl": 0, "cal": 3, "tl": 90, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "FunkoAppi01.GraphQL.FunkoMutation", "rp": "FunkoAppi01_FunkoMutation.html", "cl": 0, "ucl": 21, "cal": 21, "tl": 54, "cb": 0, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "FunkoAppi01.GraphQL.FunkosQuery", "rp": "FunkoAppi01_FunkosQuery.html", "cl": 0, "ucl": 6, "cal": 6, "tl": 31, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "FunkoAppi01.GraphQL.FunkoSubscription", "rp": "FunkoAppi01_FunkoSubscription.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 24, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "FunkoAppi01.Hubs.FunkosHub", "rp": "FunkoAppi01_FunkosHub.html", "cl": 0, "ucl": 9, "cal": 9, "tl": 35, "cb": 0, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "FunkoAppi01.GraphQL.FunkoMutation", "rp": "FunkoAppi01_FunkoMutation.html", "cl": 20, "ucl": 1, "cal": 21, "tl": 54, "cb": 5, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "FunkoAppi01.GraphQL.FunkosQuery", "rp": "FunkoAppi01_FunkosQuery.html", "cl": 6, "ucl": 0, "cal": 6, "tl": 31, "cb": 2, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "FunkoAppi01.GraphQL.FunkoSubscription", "rp": "FunkoAppi01_FunkoSubscription.html", "cl": 3, "ucl": 0, "cal": 3, "tl": 24, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "FunkoAppi01.Hubs.FunkosHub", "rp": "FunkoAppi01_FunkosHub.html", "cl": 9, "ucl": 0, "cal": 9, "tl": 35, "cb": 3, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Infraestructure.AuthenticationConfig", "rp": "FunkoAppi01_AuthenticationConfig.html", "cl": 59, "ucl": 8, "cal": 67, "tl": 89, "cb": 3, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "FunkoAppi01.Infraestructure.CacheConfig", "rp": "FunkoAppi01_CacheConfig.html", "cl": 9, "ucl": 5, "cal": 14, "tl": 27, "cb": 1, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "FunkoAppi01.Infraestructure.CacheConfig", "rp": "FunkoAppi01_CacheConfig.html", "cl": 14, "ucl": 0, "cal": 14, "tl": 27, "cb": 2, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Infraestructure.EmailConfig", "rp": "FunkoAppi01_EmailConfig.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 16, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Infraestructure.GraphQLConfig", "rp": "FunkoAppi01_GraphQLConfig.html", "cl": 16, "ucl": 0, "cal": 16, "tl": 34, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Infraestructure.OutputCacheConfig", "rp": "FunkoAppi01_OutputCacheConfig.html", "cl": 8, "ucl": 0, "cal": 8, "tl": 20, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Infraestructure.PersistenceConfig", "rp": "FunkoAppi01_PersistenceConfig.html", "cl": 12, "ucl": 2, "cal": 14, "tl": 26, "cb": 2, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Infraestructure.RateLimitConfig", "rp": "FunkoAppi01_RateLimitConfig.html", "cl": 31, "ucl": 15, "cal": 46, "tl": 65, "cb": 7, "tb": 12, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "FunkoAppi01.Infraestructure.RepositoriesConfig", "rp": "FunkoAppi01_RepositoriesConfig.html", "cl": 11, "ucl": 7, "cal": 18, "tl": 35, "cb": 1, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "FunkoAppi01.Infraestructure.RepositoriesConfig", "rp": "FunkoAppi01_RepositoriesConfig.html", "cl": 18, "ucl": 0, "cal": 18, "tl": 35, "cb": 2, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Infraestructure.ServiceConfig", "rp": "FunkoAppi01_ServiceConfig.html", "cl": 7, "ucl": 0, "cal": 7, "tl": 18, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Infraestructure.SignalRConfig", "rp": "FunkoAppi01_SignalRConfig.html", "cl": 9, "ucl": 0, "cal": 9, "tl": 16, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Infraestructure.UserSeeder", "rp": "FunkoAppi01_UserSeeder.html", "cl": 21, "ucl": 1, "cal": 22, "tl": 38, "cb": 1, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Infraestructure.ValidatorsConfig", "rp": "FunkoAppi01_ValidatorsConfig.html", "cl": 6, "ucl": 0, "cal": 6, "tl": 14, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Mappers.CategoriaEntityMapper", "rp": "FunkoAppi01_CategoriaEntityMapper.html", "cl": 8, "ucl": 0, "cal": 8, "tl": 19, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Mappers.CategoriaMapper", "rp": "FunkoAppi01_CategoriaMapper.html", "cl": 13, "ucl": 0, "cal": 13, "tl": 26, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "FunkoAppi01.Mappers.FunkoEntityMapper", "rp": "FunkoAppi01_FunkoEntityMapper.html", "cl": 12, "ucl": 0, "cal": 12, "tl": 25, "cb": 1, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "FunkoAppi01.Mappers.FunkoEntityMapper", "rp": "FunkoAppi01_FunkoEntityMapper.html", "cl": 12, "ucl": 0, "cal": 12, "tl": 25, "cb": 2, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Mappers.FunkoMapper", "rp": "FunkoAppi01_FunkoMapper.html", "cl": 25, "ucl": 0, "cal": 25, "tl": 42, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Mappers.ProveedorEntityMapper", "rp": "FunkoAppi01_ProveedorEntityMapper.html", "cl": 9, "ucl": 0, "cal": 9, "tl": 20, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Mappers.ProveedorMapper", "rp": "FunkoAppi01_ProveedorMapper.html", "cl": 16, "ucl": 0, "cal": 16, "tl": 29, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "FunkoAppi01.Middleware.ExceptionHandlerMiddleware", "rp": "FunkoAppi01_ExceptionHandlerMiddleware.html", "cl": 6, "ucl": 22, "cal": 28, "tl": 43, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "FunkoAppi01.Middleware.ExceptionHandlerMiddleware", "rp": "FunkoAppi01_ExceptionHandlerMiddleware.html", "cl": 28, "ucl": 0, "cal": 28, "tl": 43, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Models.Categoria", "rp": "FunkoAppi01_Categoria.html", "cl": 5, "ucl": 0, "cal": 5, "tl": 10, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Models.Funko", "rp": "FunkoAppi01_Funko.html", "cl": 9, "ucl": 0, "cal": 9, "tl": 14, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Models.Proveedor", "rp": "FunkoAppi01_Proveedor.html", "cl": 6, "ucl": 0, "cal": 6, "tl": 11, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Repository.Mongo.RepositoryCategoriaMongo", "rp": "FunkoAppi01_RepositoryCategoriaMongo.html", "cl": 0, "ucl": 83, "cal": 83, "tl": 136, "cb": 0, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "FunkoAppi01.Repository.RepositoryCategoria", "rp": "FunkoAppi01_RepositoryCategoria.html", "cl": 47, "ucl": 9, "cal": 56, "tl": 94, "cb": 5, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "FunkoAppi01.Repository.RepositoryFunko", "rp": "FunkoAppi01_RepositoryFunko.html", "cl": 63, "ucl": 47, "cal": 110, "tl": 170, "cb": 9, "tb": 20, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "FunkoAppi01.Repository.RepositoryProveedor", "rp": "FunkoAppi01_RepositoryProveedor.html", "cl": 49, "ucl": 9, "cal": 58, "tl": 96, "cb": 5, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "FunkoAppi01.Repository.RepositoryCategoria", "rp": "FunkoAppi01_RepositoryCategoria.html", "cl": 56, "ucl": 0, "cal": 56, "tl": 94, "cb": 6, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "FunkoAppi01.Repository.RepositoryFunko", "rp": "FunkoAppi01_RepositoryFunko.html", "cl": 109, "ucl": 1, "cal": 110, "tl": 170, "cb": 17, "tb": 20, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "FunkoAppi01.Repository.RepositoryProveedor", "rp": "FunkoAppi01_RepositoryProveedor.html", "cl": 58, "ucl": 0, "cal": 58, "tl": 96, "cb": 6, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Repository.RepositoryUser", "rp": "FunkoAppi01_RepositoryUser.html", "cl": 8, "ucl": 0, "cal": 8, "tl": 22, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Service.AuthService", "rp": "FunkoAppi01_AuthService.html", "cl": 39, "ucl": 0, "cal": 39, "tl": 65, "cb": 8, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Service.Email.EmailMessage", "rp": "FunkoAppi01_EmailMessage.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 12, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Service.Email.EmailTemplates", "rp": "FunkoAppi01_EmailTemplates.html", "cl": 12, "ucl": 0, "cal": 12, "tl": 24, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "FunkoAppi01.Service.Email.MemoryEmailService", "rp": "FunkoAppi01_MemoryEmailService.html", "cl": 8, "ucl": 7, "cal": 15, "tl": 27, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "FunkoAppi01.Service.Email.MemoryEmailService", "rp": "FunkoAppi01_MemoryEmailService.html", "cl": 15, "ucl": 0, "cal": 15, "tl": 27, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Service.JwtService", "rp": "FunkoAppi01_JwtService.html", "cl": 22, "ucl": 0, "cal": 22, "tl": 45, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "FunkoAppi01.Service.ServiceCategoria", "rp": "FunkoAppi01_ServiceCategoria.html", "cl": 45, "ucl": 12, "cal": 57, "tl": 99, "cb": 12, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "FunkoAppi01.Service.ServiceFunko", "rp": "FunkoAppi01_ServiceFunko.html", "cl": 98, "ucl": 25, "cal": 123, "tl": 202, "cb": 23, "tb": 26, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "FunkoAppi01.Service.ServiceProveedor", "rp": "FunkoAppi01_ServiceProveedor.html", "cl": 45, "ucl": 12, "cal": 57, "tl": 99, "cb": 12, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "FunkoAppi01.Service.ServiceCategoria", "rp": "FunkoAppi01_ServiceCategoria.html", "cl": 55, "ucl": 2, "cal": 57, "tl": 99, "cb": 12, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "FunkoAppi01.Service.ServiceFunko", "rp": "FunkoAppi01_ServiceFunko.html", "cl": 108, "ucl": 15, "cal": 123, "tl": 202, "cb": 23, "tb": 26, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "FunkoAppi01.Service.ServiceProveedor", "rp": "FunkoAppi01_ServiceProveedor.html", "cl": 55, "ucl": 2, "cal": 57, "tl": 99, "cb": 12, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Validators.CategoriaValidator", "rp": "FunkoAppi01_CategoriaValidator.html", "cl": 18, "ucl": 0, "cal": 18, "tl": 42, "cb": 6, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Validators.FunkoValidator", "rp": "FunkoAppi01_FunkoValidator.html", "cl": 21, "ucl": 1, "cal": 22, "tl": 53, "cb": 10, "tb": 12, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "FunkoAppi01.Validators.ProveedorValidator", "rp": "FunkoAppi01_ProveedorValidator.html", "cl": 20, "ucl": 0, "cal": 20, "tl": 45, "cb": 8, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Microsoft.AspNetCore.OpenApi.Generated", "rp": "FunkoAppi01_Generated.html", "cl": 0, "ucl": 603, "cal": 603, "tl": 821, "cb": 0, "tb": 206, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "System.Runtime.CompilerServices", "rp": "FunkoAppi01_CompilerServices.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 23, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
     ]},
 ];
 
@@ -377,59 +375,9 @@ var metrics = [{ "name": "Crap Score", "abbreviation": "crp", "explanationUrl": 
 var historicCoverageExecutionTimes = [];
 
 var riskHotspotMetrics = [
-      { "name": "Crap Score", "explanationUrl": "https://googletesting.blogspot.de/2011/02/this-code-is-crap.html" },
-      { "name": "Cyclomatic complexity", "explanationUrl": "https://en.wikipedia.org/wiki/Cyclomatic_complexity" },
 ];
 
 var riskHotspots = [
-  {
-    "assembly": "FunkoAppi01", "class": "Microsoft.AspNetCore.OpenApi.Generated", "reportPath": "FunkoAppi01_Generated.html", "methodName": "TransformAsync(Microsoft.OpenApi.OpenApiOperation,Microsoft.AspNetCore.OpenApi.OpenApiOperationTransformerContext,System.Threading.CancellationToken)", "methodShortName": "TransformAsync(...)", "fileIndex": 0, "line": 574,
-    "metrics": [
-      { "value": 8930, "exceeded": true },
-      { "value": 94, "exceeded": true },
-    ]},
-  {
-    "assembly": "FunkoAppi01", "class": "Microsoft.AspNetCore.OpenApi.Generated", "reportPath": "FunkoAppi01_Generated.html", "methodName": "TransformAsync(Microsoft.OpenApi.OpenApiSchema,Microsoft.AspNetCore.OpenApi.OpenApiSchemaTransformerContext,System.Threading.CancellationToken)", "methodShortName": "TransformAsync(...)", "fileIndex": 0, "line": 740,
-    "metrics": [
-      { "value": 1190, "exceeded": true },
-      { "value": 34, "exceeded": true },
-    ]},
-  {
-    "assembly": "FunkoAppi01", "class": "Microsoft.AspNetCore.OpenApi.Generated", "reportPath": "FunkoAppi01_Generated.html", "methodName": "GetTypeDocId(System.Type,System.Boolean,System.Boolean)", "methodShortName": "GetTypeDocId(...)", "fileIndex": 0, "line": 467,
-    "metrics": [
-      { "value": 812, "exceeded": true },
-      { "value": 28, "exceeded": true },
-    ]},
-  {
-    "assembly": "FunkoAppi01", "class": "Microsoft.AspNetCore.OpenApi.Generated", "reportPath": "FunkoAppi01_Generated.html", "methodName": "CreateDocumentationId(System.Reflection.MethodInfo)", "methodShortName": "CreateDocumentationId(...)", "fileIndex": 0, "line": 397,
-    "metrics": [
-      { "value": 342, "exceeded": true },
-      { "value": 18, "exceeded": true },
-    ]},
-  {
-    "assembly": "FunkoAppi01", "class": "Microsoft.AspNetCore.OpenApi.Generated", "reportPath": "FunkoAppi01_Generated.html", "methodName": "CreateDocumentationId(System.Reflection.PropertyInfo)", "methodShortName": "CreateDocumentationId(...)", "fileIndex": 0, "line": 329,
-    "metrics": [
-      { "value": 110, "exceeded": true },
-      { "value": 10, "exceeded": false },
-    ]},
-  {
-    "assembly": "FunkoAppi01", "class": "FunkoAppi01.Cache.RedisCacheService", "reportPath": "FunkoAppi01_RedisCacheService.html", "methodName": "GetOrSetAsync()", "methodShortName": "GetOrSetAsync()", "fileIndex": 0, "line": 40,
-    "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
-    ]},
-  {
-    "assembly": "FunkoAppi01", "class": "Microsoft.AspNetCore.OpenApi.Generated", "reportPath": "FunkoAppi01_Generated.html", "methodName": "NormalizeDocId(System.String)", "methodShortName": "NormalizeDocId(...)", "fileIndex": 0, "line": 549,
-    "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
-    ]},
-  {
-    "assembly": "FunkoAppi01", "class": "Microsoft.AspNetCore.OpenApi.Generated", "reportPath": "FunkoAppi01_Generated.html", "methodName": "UnwrapOpenApiParameter(Microsoft.OpenApi.IOpenApiParameter)", "methodShortName": "UnwrapOpenApiParameter(...)", "fileIndex": 0, "line": 713,
-    "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
-    ]},
 ];
 
 var branchCoverageAvailable = true;

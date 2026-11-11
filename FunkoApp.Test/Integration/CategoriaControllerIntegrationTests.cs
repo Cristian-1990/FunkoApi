@@ -92,6 +92,60 @@ public class CategoriaControllerIntegrationTests
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.NoContent);
         }
+
+        [Test]
+        public async Task Update_ConTokenDeAdmin_DeberiaDevolverOkConElNuevoNombre()
+        {
+            // Arrange
+            _client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", await ObtenerTokenAdminAsync());
+            var creada = await _client.PostAsJsonAsync("/api/Categoria", new CreateCategoriaDto("Comics"));
+            var categoria = await creada.Content.ReadFromJsonAsync<CategoriaDto>();
+
+            // Act
+            var response = await _client.PutAsJsonAsync(
+                $"/api/Categoria/{categoria!.Id}", new UpdateCategoriaDto("Comics y Manga"));
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var actualizada = await response.Content.ReadFromJsonAsync<CategoriaDto>();
+            actualizada!.Nombre.Should().Be("Comics y Manga");
+        }
+
+        [Test]
+        public async Task Search_DeberiaDevolverSoloLasQueCoincidenConElTexto()
+        {
+            // Arrange
+            _client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", await ObtenerTokenAdminAsync());
+            await _client.PostAsJsonAsync("/api/Categoria", new CreateCategoriaDto("Terror"));
+            await _client.PostAsJsonAsync("/api/Categoria", new CreateCategoriaDto("Comedia"));
+
+            // Act
+            var response = await _client.GetAsync("/api/Categoria/search?nombre=Terr");
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var categorias = await response.Content.ReadFromJsonAsync<List<CategoriaDto>>();
+            categorias.Should().ContainSingle(c => c.Nombre == "Terror");
+        }
+
+        [Test]
+        public async Task GetPaged_DeberiaDevolverLosMetadatosDePaginacion()
+        {
+            // Arrange
+            _client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", await ObtenerTokenAdminAsync());
+            await _client.PostAsJsonAsync("/api/Categoria", new CreateCategoriaDto("Drama"));
+
+            // Act
+            var response = await _client.GetAsync("/api/Categoria/paged?page=1&pageSize=1");
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var pagina = await response.Content.ReadFromJsonAsync<PagedResponse<CategoriaDto>>();
+            pagina!.Data.Should().HaveCount(1);
+        }
     }
 
     [TestFixture]

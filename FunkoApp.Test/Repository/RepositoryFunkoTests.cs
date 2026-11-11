@@ -102,6 +102,82 @@ public class RepositoryFunkoTests
             // Assert
             existe.Should().BeFalse();
         }
+
+        [Test]
+        public async Task AddAsync_ConProveedor_DeberiaCrearloYAsignarlo()
+        {
+            // Arrange
+            var funko = CrearFunko("Pikachu");
+            funko.Proveedor = "Funko Inc";
+
+            // Act
+            var creado = await _repository.AddAsync(funko);
+
+            // Assert
+            creado.Proveedor.Should().Be("Funko Inc");
+            (await _context.Proveedores.CountAsync()).Should().Be(1);
+        }
+
+        [Test]
+        public async Task AddAsync_DosFunkosConElMismoProveedor_DeberianCompartirLaFilaDeProveedor()
+        {
+            // Arrange
+            var uno = CrearFunko("Pikachu");
+            uno.Proveedor = "Funko Inc";
+            var dos = CrearFunko("Charmander");
+            dos.Proveedor = "Funko Inc";
+
+            // Act
+            await _repository.AddAsync(uno);
+            await _repository.AddAsync(dos);
+
+            // Assert
+            (await _context.Proveedores.CountAsync()).Should().Be(1);
+        }
+
+        [Test]
+        public async Task UpdatePrecioAsync_DeberiaActualizarSoloElPrecio()
+        {
+            // Arrange
+            var creado = await _repository.AddAsync(CrearFunko("Pikachu"));
+
+            // Act
+            var actualizado = await _repository.UpdatePrecioAsync(creado.Id, 99.9m);
+
+            // Assert
+            actualizado!.Precio.Should().Be(99.9m);
+            actualizado.UpdatedAt.Should().NotBeNull();
+        }
+
+        [Test]
+        public async Task GetByNameAsync_DeberiaDevolverSoloLosQueContienenElTexto()
+        {
+            // Arrange
+            await _repository.AddAsync(CrearFunko("Pikachu"));
+            await _repository.AddAsync(CrearFunko("Charmander"));
+
+            // Act
+            var resultado = await _repository.GetByNameAsync("Pika");
+
+            // Assert
+            resultado.Should().ContainSingle(f => f.Nombre == "Pikachu");
+        }
+
+        [Test]
+        public async Task GetPagedAsync_DeberiaRespetarElTamanoDePagina()
+        {
+            // Arrange
+            await _repository.AddAsync(CrearFunko("Pikachu"));
+            await _repository.AddAsync(CrearFunko("Charmander"));
+            await _repository.AddAsync(CrearFunko("Squirtle"));
+
+            // Act
+            var (items, total) = await _repository.GetPagedAsync(1, 2);
+
+            // Assert
+            items.Should().HaveCount(2);
+            total.Should().Be(3);
+        }
     }
 
     [TestFixture]
