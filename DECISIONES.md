@@ -564,4 +564,18 @@ Normas de este documento (ver `CLAUDE.md` en `Entorno-Servidor/`, puntos 7 y 9):
 
 **Qué queda pendiente:** nada bloqueante. Documentado también en el README (badge de cobertura, sección "Cobertura", tabla de tests actualizada, y la sección "Qué queda fuera" puesta al día tras los últimos bloques).
 
+## Entrada 25. Cobertura al 80% mínimo — no negociable
+
+**Qué se hizo:** Cristian fijó un mínimo de cobertura del 80%, sin margen de discusión. Se añadieron 60 tests nuevos (113→173): `Cache/` (Memory+Redis), `GraphQL/` (Query/Mutation/Subscription, llamando a las clases directamente con sus dependencias mockeadas, sin levantar transporte), `Hubs/` (FunkosHub, mockeando `Context`/`Groups`/`Clients`), `Middleware/` (excepciones), `Infraestructure/` (tests de humo de registro DI), más los huecos que quedaban en `RepositoryFunko` y en los tres controladores (Update/Search/GetPaged).
+
+**Hallazgo que cambió el resultado:** `Microsoft.AspNetCore.OpenApi.Generated`, una clase autogenerada por el propio SDK (soporte de comentarios XML para Swagger), tenía **603 líneas "cubribles" al 0%** — más de la cuarta parte de toda la superficie medida, sin ser código nuestro. Se excluyó en `coverlet.runsettings`, exactamente la misma lógica que `RepositorioRemoto` aplicó a su propio `Program.cs`. Solo esa corrección ya llevó la cobertura del 58.6% al 80.8%.
+
+**Resultado final: 88.5%**, con margen. El único 0% que queda es `RepositoryCategoriaMongo` (ya documentado en la Entrada 20: verificado en vivo contra Mongo real, sin test automático por el tiempo que costaría montar un Mongo de pruebas aislado) — con el margen actual, no hace falta forzarlo para cumplir el mínimo.
+
+**Decisión tomada:** excluir código generado/framework de la medición, igual que el proyecto de referencia; no inflar artificialmente con tests triviales que no prueben nada real (cada test nuevo verifica un comportamiento concreto, con Arrange/Act/Assert, no solo "que no explote").
+
+**Alternativas descartadas:** forzar cobertura en `RepositoryCategoriaMongo` con una librería de Mongo embebido (`Mongo2Go`) solo para sumar puntos porcentuales. Descartada: con 88.5% de margen no hace falta, y añadir una dependencia nueva a horas de la entrega por una métrica ya cumplida no compensa.
+
+**Qué queda pendiente:** casos de uso y diagramas (Fase 2, en curso), PDF checklist final (Fase 3), presentación (Fase 4).
+
 <!-- La siguiente entrada se añade aquí, con el mismo formato: Qué se hizo / Decisión y porqué / Alternativas descartadas / Pendiente -->
