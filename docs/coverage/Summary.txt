@@ -1,0 +1,101 @@
+Summary
+  Generated on: 11/11/2026 - 19:15:48
+  Coverage date: 11/11/2026 - 19:15:47
+  Parser: Cobertura
+  Assemblies: 1
+  Classes: 79
+  Files: 73
+  Line coverage: 53.8%
+  Covered lines: 1189
+  Uncovered lines: 1018
+  Coverable lines: 2207
+  Total lines: 4129
+  Branch coverage: 30.8% (140 of 454)
+  Covered branches: 140
+  Total branches: 454
+  Method coverage: 74.9% (275 of 367)
+  Full method coverage: 68.6% (252 of 367)
+  Covered methods: 275
+  Fully covered methods: 252
+  Total methods: 367
+
+FunkoAppi01                                               53.8%
+  FunkoAppi01.Cache.MemoryCacheService                    71.4%
+  FunkoAppi01.Cache.RedisCacheService                        0%
+  FunkoAppi01.Config.CacheOptions                          100%
+  FunkoAppi01.Config.DatabaseConfig                        100%
+  FunkoAppi01.Config.JwtConfig                             100%
+  FunkoAppi01.Config.MongoConfig                             0%
+  FunkoAppi01.Controller.AuthController                   97.1%
+  FunkoAppi01.Controller.CategoriaController              59.5%
+  FunkoAppi01.Controller.FunkoController                  58.1%
+  FunkoAppi01.Controller.ProveedorController              59.5%
+  FunkoAppi01.Dto.AuthResponseDto                          100%
+  FunkoAppi01.Dto.CategoriaDto                             100%
+  FunkoAppi01.Dto.CreateCategoriaDto                       100%
+  FunkoAppi01.Dto.CreateFunkoDto                           100%
+  FunkoAppi01.Dto.CreateProveedorDto                       100%
+  FunkoAppi01.Dto.FunkoDto                                 100%
+  FunkoAppi01.Dto.LoginDto                                 100%
+  FunkoAppi01.Dto.PagedResponse<T>                           0%
+  FunkoAppi01.Dto.PageMetadata                               0%
+  FunkoAppi01.Dto.ProveedorDto                             100%
+  FunkoAppi01.Dto.SignupDto                                100%
+  FunkoAppi01.Dto.UpdateCategoriaDto                       100%
+  FunkoAppi01.Dto.UpdateFunkoDto                           100%
+  FunkoAppi01.Dto.UpdateProveedorDto                       100%
+  FunkoAppi01.Entity.AppDbContext                          100%
+  FunkoAppi01.Entity.CategoriaEntity                       100%
+  FunkoAppi01.Entity.FunkoEntity                           100%
+  FunkoAppi01.Entity.Mongo.CategoriaMongoDocument            0%
+  FunkoAppi01.Entity.ProveedorEntity                       100%
+  FunkoAppi01.Entity.UserEntity                            100%
+  FunkoAppi01.Errors.AuthErrors                            100%
+  FunkoAppi01.Errors.CategoriaErrors                       100%
+  FunkoAppi01.Errors.DomainError                          66.6%
+  FunkoAppi01.Errors.FunkoErrors                           100%
+  FunkoAppi01.Errors.ProveedorErrors                       100%
+  FunkoAppi01.GraphQL.FunkoMutation                          0%
+  FunkoAppi01.GraphQL.FunkosQuery                            0%
+  FunkoAppi01.GraphQL.FunkoSubscription                      0%
+  FunkoAppi01.Hubs.FunkosHub                                 0%
+  FunkoAppi01.Infraestructure.AuthenticationConfig          88%
+  FunkoAppi01.Infraestructure.CacheConfig                 64.2%
+  FunkoAppi01.Infraestructure.EmailConfig                  100%
+  FunkoAppi01.Infraestructure.GraphQLConfig                100%
+  FunkoAppi01.Infraestructure.OutputCacheConfig            100%
+  FunkoAppi01.Infraestructure.PersistenceConfig           85.7%
+  FunkoAppi01.Infraestructure.RateLimitConfig             67.3%
+  FunkoAppi01.Infraestructure.RepositoriesConfig          61.1%
+  FunkoAppi01.Infraestructure.ServiceConfig                100%
+  FunkoAppi01.Infraestructure.SignalRConfig                100%
+  FunkoAppi01.Infraestructure.UserSeeder                  95.4%
+  FunkoAppi01.Infraestructure.ValidatorsConfig             100%
+  FunkoAppi01.Mappers.CategoriaEntityMapper                100%
+  FunkoAppi01.Mappers.CategoriaMapper                      100%
+  FunkoAppi01.Mappers.FunkoEntityMapper                    100%
+  FunkoAppi01.Mappers.FunkoMapper                          100%
+  FunkoAppi01.Mappers.ProveedorEntityMapper                100%
+  FunkoAppi01.Mappers.ProveedorMapper                      100%
+  FunkoAppi01.Middleware.ExceptionHandlerMiddleware       21.4%
+  FunkoAppi01.Models.Categoria                             100%
+  FunkoAppi01.Models.Funko                                 100%
+  FunkoAppi01.Models.Proveedor                             100%
+  FunkoAppi01.Repository.Mongo.RepositoryCategoriaMongo      0%
+  FunkoAppi01.Repository.RepositoryCategoria              83.9%
+  FunkoAppi01.Repository.RepositoryFunko                  57.2%
+  FunkoAppi01.Repository.RepositoryProveedor              84.4%
+  FunkoAppi01.Repository.RepositoryUser                    100%
+  FunkoAppi01.Service.AuthService                          100%
+  FunkoAppi01.Service.Email.EmailMessage                   100%
+  FunkoAppi01.Service.Email.EmailTemplates                 100%
+  FunkoAppi01.Service.Email.MemoryEmailService            53.3%
+  FunkoAppi01.Service.JwtService                           100%
+  FunkoAppi01.Service.ServiceCategoria                    78.9%
+  FunkoAppi01.Service.ServiceFunko                        79.6%
+  FunkoAppi01.Service.ServiceProveedor                    78.9%
+  FunkoAppi01.Validators.CategoriaValidator                100%
+  FunkoAppi01.Validators.FunkoValidator                   95.4%
+  FunkoAppi01.Validators.ProveedorValidator                100%
+  Microsoft.AspNetCore.OpenApi.Generated                     0%
+  System.Runtime.CompilerServices                            0%
