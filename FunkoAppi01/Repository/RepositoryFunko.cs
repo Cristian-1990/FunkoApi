@@ -16,6 +16,7 @@ public class RepositoryFunko(AppDbContext context) : IRepositoryFunko
     {
         var entidades = await context.Funkos
             .Include(f => f.Categoria)
+            .Include(f => f.Proveedor)
             .AsNoTracking()
             .OrderBy(f => f.Id)
             .ToListAsync();
@@ -32,6 +33,7 @@ public class RepositoryFunko(AppDbContext context) : IRepositoryFunko
     public async Task<Funko> AddAsync(Funko funko)
     {
         var categoria = await ObtenerOCrearCategoria(funko.Categoria);
+        var proveedor = await ObtenerOCrearProveedor(funko.Proveedor);
 
         var entidad = new FunkoEntity
         {
@@ -40,6 +42,8 @@ public class RepositoryFunko(AppDbContext context) : IRepositoryFunko
             Stock = funko.Stock,
             CategoriaId = categoria.Id,
             Categoria = categoria,
+            ProveedorId = proveedor?.Id,
+            Proveedor = proveedor,
             CreatedAt = DateTime.UtcNow
         };
 
@@ -56,12 +60,15 @@ public class RepositoryFunko(AppDbContext context) : IRepositoryFunko
             return null;
 
         var categoria = await ObtenerOCrearCategoria(funko.Categoria);
+        var proveedor = await ObtenerOCrearProveedor(funko.Proveedor);
 
         entidad.Nombre = funko.Nombre;
         entidad.Precio = funko.Precio;
         entidad.Stock = funko.Stock;
         entidad.CategoriaId = categoria.Id;
         entidad.Categoria = categoria;
+        entidad.ProveedorId = proveedor?.Id;
+        entidad.Proveedor = proveedor;
         entidad.UpdatedAt = DateTime.UtcNow;
 
         await context.SaveChangesAsync();
@@ -100,6 +107,7 @@ public class RepositoryFunko(AppDbContext context) : IRepositoryFunko
 
         var entidades = await context.Funkos
             .Include(f => f.Categoria)
+            .Include(f => f.Proveedor)
             .AsNoTracking()
             .Where(f => f.Nombre.Contains(texto))
             .OrderBy(f => f.Nombre)
@@ -113,7 +121,8 @@ public class RepositoryFunko(AppDbContext context) : IRepositoryFunko
 
     public async Task<(IReadOnlyList<Funko> Items, int Total)> GetPagedAsync(int page, int pageSize)
     {
-        var query = context.Funkos.Include(f => f.Categoria).AsNoTracking().OrderBy(f => f.Id);
+        var query = context.Funkos.Include(f => f.Categoria).Include(f => f.Proveedor)
+            .AsNoTracking().OrderBy(f => f.Id);
 
         var total = await query.CountAsync();
         var entidades = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
@@ -122,7 +131,8 @@ public class RepositoryFunko(AppDbContext context) : IRepositoryFunko
     }
 
     private async Task<FunkoEntity?> BuscarPorId(long id) =>
-        await context.Funkos.Include(f => f.Categoria).FirstOrDefaultAsync(f => f.Id == id);
+        await context.Funkos.Include(f => f.Categoria).Include(f => f.Proveedor)
+            .FirstOrDefaultAsync(f => f.Id == id);
 
     private async Task<CategoriaEntity> ObtenerOCrearCategoria(string nombre)
     {
@@ -137,5 +147,24 @@ public class RepositoryFunko(AppDbContext context) : IRepositoryFunko
         await context.SaveChangesAsync();
 
         return categoria;
+    }
+
+    /// <summary>Proveedor es opcional: si no viene informado, no se crea ni se asigna nada.</summary>
+    private async Task<ProveedorEntity?> ObtenerOCrearProveedor(string? nombre)
+    {
+        if (string.IsNullOrWhiteSpace(nombre))
+            return null;
+
+        var proveedor = await context.Proveedores
+            .FirstOrDefaultAsync(p => p.Nombre.ToLower() == nombre.ToLower());
+
+        if (proveedor is not null)
+            return proveedor;
+
+        proveedor = new ProveedorEntity { Nombre = nombre, Telefono = string.Empty, CreatedAt = DateTime.UtcNow };
+        context.Proveedores.Add(proveedor);
+        await context.SaveChangesAsync();
+
+        return proveedor;
     }
 }
