@@ -539,4 +539,14 @@ Normas de este documento (ver `CLAUDE.md` en `Entorno-Servidor/`, puntos 7 y 9):
 
 **Qué queda pendiente:** checklist final y presentación — ya cerrados en `EXPOSICION.md`, solo falta actualizar ese documento para reflejar que el pendiente de "Proveedor en Funko" ya está resuelto.
 
+## Entrada 23. Cierre final antes de la exposición
+
+**Qué se hizo:** antes de dar el proyecto por terminado, se cerró el único hueco de verificación que quedaba abierto desde la Entrada 19: las subscriptions de GraphQL nunca se habían probado con un cliente real. Se escribió un cliente con `graphql-ws` (Node.js) que se suscribe a `funkoCreado` y dispara la mutación `crearFunko` en paralelo.
+
+**Bug real encontrado y corregido:** la primera prueba falló — la conexión WebSocket nunca completaba el *handshake* (`Unexpected server response: 200/301`). Faltaba `app.UseWebSockets()` en el pipeline; sin esa línea, **las subscriptions no funcionaban en absoluto**, pese a que todo compilaba y las queries/mutations normales (HTTP) sí iban bien. Añadida la línea en `GraphQLConfig.MapGraphQLEndpoints`, repetida la prueba: `EVENTO RECIBIDO funkoCreado: {...}` — funciona de verdad. 82/82 tests siguen en verde.
+
+**Por qué importa:** esto confirma la norma de verificación en tres capas del proyecto — "compila" y "pasan los tests" no habían detectado este fallo, porque ningún test automatizado abre una conexión WebSocket real. Solo probarlo con un cliente de verdad lo sacó a la luz, justo a tiempo para la exposición.
+
+**Qué queda pendiente:** nada bloqueante. El proyecto se considera cerrado para la entrega de mañana.
+
 <!-- La siguiente entrada se añade aquí, con el mismo formato: Qué se hizo / Decisión y porqué / Alternativas descartadas / Pendiente -->

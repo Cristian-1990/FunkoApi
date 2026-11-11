@@ -50,7 +50,7 @@ hecho, y la **explicación en tres niveles** para que la domines de menos a más
 ### Lo que queda honestamente fuera o a medias
 
 - **Identity**: aparcado desde el principio, sin resolver.
-- **Subscriptions de GraphQL**: cableadas con el mismo mecanismo que SignalR, pero no probadas con un cliente real (sí lo están las de SignalR).
+- ~~Subscriptions de GraphQL sin probar~~ — **resuelto**: se probaron con un cliente real (`graphql-ws`) y se encontró y corrigió un bug real (`app.UseWebSockets()` no estaba activado, sin él no funcionaban en absoluto).
 - **CI/CD con GitHub Actions**: el material de Docker de José Luis lo menciona como parte de su propio reto, pero no apareció en tu nota de clase — no se ha hecho, queda fuera salvo que lo pidas.
 - **`.env` y nombre `docker-compose.yml`**: usamos variables de entorno directas en `compose.yaml` (nombre moderno del mismo fichero) en vez de un `.env` aparte — funciona igual, pero si el profesor pide el fichero `.env` literal, no está.
 - **MongoDB solo en Categoria**, no en Proveedor — alcance reducido por tiempo, documentado.
@@ -154,7 +154,8 @@ diseños distintos.
   por REST en paralelo.
 - **GraphQL**: una API alternativa (HotChocolate) que convive con los controladores REST,
   hablando con los mismos servicios — nunca duplicando lógica de negocio. Queries, mutations con
-  autorización por rol, y subscriptions cableadas con el mismo mecanismo que SignalR.
+  autorización por rol, y subscriptions probadas con un cliente real (`graphql-ws`), igual que
+  SignalR — al probarlas se encontró y corrigió un bug real: faltaba `app.UseWebSockets()`.
 - **MongoDB**: Categoria puede vivir en MongoDB en vez de PostgreSQL, decidido por configuración
   (`DatabaseSettings:CategoriaProvider`). El controlador, el servicio y los DTOs no cambian ni
   una línea — solo cambia qué clase implementa `IRepositoryCategoria`. Lo verificaste mirando
