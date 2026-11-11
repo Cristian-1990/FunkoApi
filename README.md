@@ -2,7 +2,8 @@
 
 ![.NET](https://img.shields.io/badge/.NET-10-512BD4?style=flat-square&logo=dotnet&logoColor=white)
 ![C#](https://img.shields.io/badge/C%23-14-239120?style=flat-square&logo=csharp&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-82%20passing-2ea44f?style=flat-square)
+![Tests](https://img.shields.io/badge/tests-113%20passing-2ea44f?style=flat-square)
+![Cobertura](https://img.shields.io/badge/cobertura-53.8%25-dfb317?style=flat-square)
 ![SQLite](https://img.shields.io/badge/EF%20Core-SQLite-003B57?style=flat-square&logo=sqlite&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?style=flat-square&logo=postgresql&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-multi--stage-2496ED?style=flat-square&logo=docker&logoColor=white)
@@ -177,7 +178,7 @@ también los datos de Postgres).
 dotnet test
 ```
 
-**82 tests**, con NUnit, Moq y FluentAssertions, patrón AAA (Arrange, Act, Assert) y
+**113 tests**, con NUnit, Moq y FluentAssertions, patrón AAA (Arrange, Act, Assert) y
 separados en `CasosPositivos` y `CasosNegativos`.
 
 | Qué se prueba | Nº |
@@ -186,6 +187,8 @@ separados en `CasosPositivos` y `CasosNegativos`.
 | `FunkoMapper` | 3 |
 | `FunkoValidator` | 7 |
 | `RepositoryFunko` (SQLite real en memoria, sin mocks) | 8 |
+| `RepositoryCategoria` (SQLite real en memoria, sin mocks) | 8 |
+| `RepositoryProveedor` (SQLite real en memoria, sin mocks) | 7 |
 | `ServiceFunko` (repositorio y validador mockeados) | 11 |
 | `ServiceCategoria` (repositorio y validador mockeados) | 11 |
 | `CategoriaValidator` | 4 |
@@ -194,11 +197,23 @@ separados en `CasosPositivos` y `CasosNegativos`.
 | `JwtService` | 2 |
 | `AuthService` (repositorio mockeado) | 6 |
 | `FunkoController` — integración con `WebApplicationFactory` | 8 |
+| `CategoriaController` — integración con `WebApplicationFactory` | 7 |
+| `ProveedorController` — integración con `WebApplicationFactory` | 7 |
 | `AuthController` — integración con `WebApplicationFactory` | 6 |
 
-Categoria y Proveedor solo tienen tests de servicio y validador (Moq) por ahora — no
-ha dado tiempo a los de integración con `WebApplicationFactory` antes de la entrega;
-queda declarado en [Qué queda fuera](#-qué-queda-fuera).
+### Cobertura
+
+```bash
+dotnet test --collect:"XPlat Code Coverage" --settings coverlet.runsettings
+reportgenerator -reports:"FunkoApp.Test/TestResults/*/coverage.cobertura.xml" -targetdir:docs/coverage -reporttypes:"Html;TextSummary"
+```
+
+El informe visual está en [`docs/coverage/index.html`](docs/coverage/index.html). **53.8%**
+de líneas cubiertas: alto en la capa de negocio (`ServiceFunko`/`ServiceCategoria`/`ServiceProveedor`
+en torno al 79%, validadores y mappers casi al 100%), bajo en GraphQL, SignalR y el repositorio
+Mongo — esos se verificaron en vivo con clientes reales (`curl`, un cliente SignalR y uno de
+subscriptions GraphQL en Node.js, `mongosh` contra Mongo real), documentado en `DECISIONES.md`,
+pero no tienen tests automáticos todavía por falta de tiempo.
 
 Los de integración levantan la API entera (sin mocks en ningún punto) contra una
 base de datos EF Core InMemory aislada por test, y no solo miran el código de
@@ -366,16 +381,20 @@ hay un test dedicado que fuerce un token JWT realmente expirado (requeriría un
 `JwtConfig` de expiración casi inmediata solo para ese test); sí está probado que un
 token ausente o falsificado se rechaza con `401`.
 
-Sobre el CRUD de Categoria y Proveedor (añadido fuera de las 12 fases, a petición
-del profesor según el esquema de la pizarra de clase):
+Sobre los extras pedidos al ampliar el plazo (optimización, Redis, email, SignalR,
+GraphQL, MongoDB, Bruno — ver `DECISIONES.md` para el detalle de cada bloque):
 
-- `Proveedor` en `Funko` es una relación **opcional** todavía no expuesta en los DTOs
-  de Funko (existe en la base de datos, pero no se puede asignar desde la API).
-- No hay tests de integración (`WebApplicationFactory`) de `CategoriaController` ni
-  `ProveedorController`, solo de servicio y validador.
-- La pizarra menciona además caché con Redis, persistencia políglota con MongoDB,
-  subida de imágenes y automatización con Bruno — fuera del documento oficial de la
-  Práctica 3 y fuera del alcance de esta entrega.
+- **Identity**: aparcado, pendiente de confirmar con el profesor qué se pedía
+  exactamente con ese punto.
+- **Redis** solo cachea `Funko`; **MongoDB** solo tiene a `Categoria` como motor
+  alternativo — alcance reducido conscientemente por tiempo, no por descuido.
+- **Cassandra**: descartado por su coste (exige rediseñar el acceso a datos
+  tabla-por-consulta, no es "cambiar de proveedor").
+- GraphQL, SignalR y el repositorio Mongo están verificados en vivo con clientes
+  reales, pero no tienen tests automáticos todavía (ver la sección de
+  [Cobertura](#cobertura) arriba).
+- CI/CD con GitHub Actions: mencionado en el material de Docker del profesor, no en
+  el encargo concreto de clase — no se ha hecho.
 
 Todo lo demás —persistencia real con migraciones, relaciones Uno a Muchos, JWT +
 BCrypt, tests unitarios y de integración, Docker con PostgreSQL— está hecho y
