@@ -2,8 +2,8 @@
 
 ![.NET](https://img.shields.io/badge/.NET-10-512BD4?style=flat-square&logo=dotnet&logoColor=white)
 ![C#](https://img.shields.io/badge/C%23-14-239120?style=flat-square&logo=csharp&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-113%20passing-2ea44f?style=flat-square)
-![Cobertura](https://img.shields.io/badge/cobertura-53.8%25-dfb317?style=flat-square)
+![Tests](https://img.shields.io/badge/tests-173%20passing-2ea44f?style=flat-square)
+![Cobertura](https://img.shields.io/badge/cobertura-88.5%25-2ea44f?style=flat-square)
 ![SQLite](https://img.shields.io/badge/EF%20Core-SQLite-003B57?style=flat-square&logo=sqlite&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?style=flat-square&logo=postgresql&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-multi--stage-2496ED?style=flat-square&logo=docker&logoColor=white)
@@ -178,15 +178,15 @@ también los datos de Postgres).
 dotnet test
 ```
 
-**113 tests**, con NUnit, Moq y FluentAssertions, patrón AAA (Arrange, Act, Assert) y
+**173 tests**, con NUnit, Moq y FluentAssertions, patrón AAA (Arrange, Act, Assert) y
 separados en `CasosPositivos` y `CasosNegativos`.
 
 | Qué se prueba | Nº |
 |---|---|
-| `DomainError` | 3 |
+| `DomainError` | 7 |
 | `FunkoMapper` | 3 |
 | `FunkoValidator` | 7 |
-| `RepositoryFunko` (SQLite real en memoria, sin mocks) | 8 |
+| `RepositoryFunko` (SQLite real en memoria, sin mocks) | 13 |
 | `RepositoryCategoria` (SQLite real en memoria, sin mocks) | 8 |
 | `RepositoryProveedor` (SQLite real en memoria, sin mocks) | 7 |
 | `ServiceFunko` (repositorio y validador mockeados) | 11 |
@@ -196,9 +196,15 @@ separados en `CasosPositivos` y `CasosNegativos`.
 | `ProveedorValidator` | 5 |
 | `JwtService` | 2 |
 | `AuthService` (repositorio mockeado) | 6 |
-| `FunkoController` — integración con `WebApplicationFactory` | 8 |
-| `CategoriaController` — integración con `WebApplicationFactory` | 7 |
-| `ProveedorController` — integración con `WebApplicationFactory` | 7 |
+| `MemoryCacheService` / `RedisCacheService` | 15 |
+| `MemoryEmailService` | 2 |
+| `ExceptionHandlerMiddleware` | 3 |
+| `FunkosQuery` / `FunkoMutation` / `FunkoSubscription` (GraphQL) | 11 |
+| `FunkosHub` (SignalR) | 5 |
+| `RepositoriesConfig` / `CacheConfig` / `RateLimitConfig` (registro DI) | 5 |
+| `FunkoController` — integración con `WebApplicationFactory` | 12 |
+| `CategoriaController` — integración con `WebApplicationFactory` | 10 |
+| `ProveedorController` — integración con `WebApplicationFactory` | 10 |
 | `AuthController` — integración con `WebApplicationFactory` | 6 |
 
 ### Cobertura
@@ -208,12 +214,16 @@ dotnet test --collect:"XPlat Code Coverage" --settings coverlet.runsettings
 reportgenerator -reports:"FunkoApp.Test/TestResults/*/coverage.cobertura.xml" -targetdir:docs/coverage -reporttypes:"Html;TextSummary"
 ```
 
-El informe visual está en [`docs/coverage/index.html`](docs/coverage/index.html). **53.8%**
-de líneas cubiertas: alto en la capa de negocio (`ServiceFunko`/`ServiceCategoria`/`ServiceProveedor`
-en torno al 79%, validadores y mappers casi al 100%), bajo en GraphQL, SignalR y el repositorio
-Mongo — esos se verificaron en vivo con clientes reales (`curl`, un cliente SignalR y uno de
-subscriptions GraphQL en Node.js, `mongosh` contra Mongo real), documentado en `DECISIONES.md`,
-pero no tienen tests automáticos todavía por falta de tiempo.
+El informe visual está en [`docs/coverage/index.html`](docs/coverage/index.html). **88.5%**
+de líneas cubiertas (excluyendo `Program.cs`, las migraciones de EF Core y el código
+autogenerado por el SDK para OpenAPI — ninguno es código de negocio nuestro, igual que
+`RepositorioRemoto` excluye su propio `Program.cs`). Prácticamente toda la aplicación tiene
+tests directos, incluidos GraphQL, SignalR y la caché, llamando a las clases directamente
+con sus dependencias mockeadas en vez de levantar el transporte completo (WebSocket/HTTP) —
+más simple y igual de válido para una clase C# normal. La única excepción real es
+`RepositoryCategoriaMongo`: verificado en vivo contra Mongo real (`mongosh`, ver
+`DECISIONES.md`), pero sin test automático por el tiempo que llevaría montar un Mongo de
+pruebas aislado.
 
 Los de integración levantan la API entera (sin mocks en ningún punto) contra una
 base de datos EF Core InMemory aislada por test, y no solo miran el código de

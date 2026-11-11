@@ -42,4 +42,46 @@ public class DomainErrorTests
         error.Should().BeOfType<DomainError.AlreadyExists>();
         error.Message.Should().Contain("Pikachu");
     }
+
+    [Test]
+    public void NotFound_ConEntidadDistinta_DeberiaUsarlaEnElMensaje()
+    {
+        // Act
+        var error = CategoriaErrors.NotFound(7);
+
+        // Assert
+        error.Message.Should().Contain("Categoria").And.Contain("7");
+    }
+
+    [Test]
+    public void AlreadyExists_ConEntidadDistinta_DeberiaUsarlaEnElMensaje()
+    {
+        // Act
+        var error = ProveedorErrors.AlreadyExists("Funko Inc");
+
+        // Assert
+        error.Message.Should().Contain("Proveedor").And.Contain("Funko Inc");
+    }
+
+    [Test]
+    public void Unauthorized_DeberiaUsarElMotivoComoMensaje()
+    {
+        // Act
+        var error = AuthErrors.Unauthorized("Credenciales invalidas");
+
+        // Assert
+        error.Should().BeOfType<DomainError.Unauthorized>();
+        error.Message.Should().Be("Credenciales invalidas");
+    }
+
+    [Test]
+    public void Conflict_DeberiaUsarElMotivoComoMensaje()
+    {
+        // Act
+        var error = AuthErrors.Conflict("Email ya registrado");
+
+        // Assert
+        error.Should().BeOfType<DomainError.Conflict>();
+        error.Message.Should().Be("Email ya registrado");
+    }
 }

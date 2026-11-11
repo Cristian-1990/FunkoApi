@@ -4,7 +4,7 @@
     <DataCollectors>
       <DataCollector friendlyName="XPlat code coverage">
         <Configuration>
-          <Exclude>[FunkoAppi01]Program*,[FunkoAppi01]FunkoAppi01.Migrations.*</Exclude>
+          <Exclude>[FunkoAppi01]Program*,[FunkoAppi01]FunkoAppi01.Migrations.*,[FunkoAppi01]Microsoft.AspNetCore.OpenApi.*,[FunkoAppi01]System.Runtime.CompilerServices.*</Exclude>
         </Configuration>
       </DataCollector>
     </DataCollectors>

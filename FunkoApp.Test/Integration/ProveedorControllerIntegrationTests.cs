@@ -94,6 +94,61 @@ public class ProveedorControllerIntegrationTests
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.NoContent);
         }
+
+        [Test]
+        public async Task Update_ConTokenDeAdmin_DeberiaDevolverOkConLosNuevosDatos()
+        {
+            // Arrange
+            _client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", await ObtenerTokenAdminAsync());
+            var creado = await _client.PostAsJsonAsync("/api/Proveedor",
+                new CreateProveedorDto("Bandai", "600444555"));
+            var proveedor = await creado.Content.ReadFromJsonAsync<ProveedorDto>();
+
+            // Act
+            var response = await _client.PutAsJsonAsync($"/api/Proveedor/{proveedor!.Id}",
+                new UpdateProveedorDto("Bandai Namco", "600444556"));
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var actualizado = await response.Content.ReadFromJsonAsync<ProveedorDto>();
+            actualizado!.Nombre.Should().Be("Bandai Namco");
+        }
+
+        [Test]
+        public async Task Search_DeberiaDevolverSoloLosQueCoincidenConElTexto()
+        {
+            // Arrange
+            _client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", await ObtenerTokenAdminAsync());
+            await _client.PostAsJsonAsync("/api/Proveedor", new CreateProveedorDto("Lego", "600666777"));
+            await _client.PostAsJsonAsync("/api/Proveedor", new CreateProveedorDto("Playmobil", "600777888"));
+
+            // Act
+            var response = await _client.GetAsync("/api/Proveedor/search?nombre=Leg");
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var proveedores = await response.Content.ReadFromJsonAsync<List<ProveedorDto>>();
+            proveedores.Should().ContainSingle(p => p.Nombre == "Lego");
+        }
+
+        [Test]
+        public async Task GetPaged_DeberiaDevolverLosMetadatosDePaginacion()
+        {
+            // Arrange
+            _client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", await ObtenerTokenAdminAsync());
+            await _client.PostAsJsonAsync("/api/Proveedor", new CreateProveedorDto("Revoltech", "600888999"));
+
+            // Act
+            var response = await _client.GetAsync("/api/Proveedor/paged?page=1&pageSize=1");
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var pagina = await response.Content.ReadFromJsonAsync<PagedResponse<ProveedorDto>>();
+            pagina!.Data.Should().HaveCount(1);
+        }
     }
 
     [TestFixture]
