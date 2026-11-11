@@ -24,6 +24,10 @@ public static class GraphQLConfig
 
     public static WebApplication MapGraphQLEndpoints(this WebApplication app)
     {
+        // Imprescindible para las subscriptions: sin esto, la petición de
+        // actualización a WebSocket nunca llega a completarse (HotChocolate
+        // necesita que el pipeline sepa gestionar el handshake).
+        app.UseWebSockets();
         app.MapGraphQL();
         return app;
     }
