@@ -518,4 +518,25 @@ Normas de este documento (ver `CLAUDE.md` en `Entorno-Servidor/`, puntos 7 y 9):
 
 **Qué queda pendiente:** checklist final de requisitos y presentación en tres niveles — los dos últimos pendientes de este bloque de trabajo.
 
+## Entrada 22. Revisión del trabajo de Jesús y cierre de un pendiente (Proveedor en Funko)
+
+**Qué se hizo:** se revisó `upstream/main` de Jesús (había fusionado su propia rama con PR #2: su propio CRUD de Categoria, Proveedor con MongoDB, su propia interfaz de caché, y un `Query.cs` de GraphQL inicial). Comparado a fondo con lo que ya teníamos en `dev`, antes de decidir si fusionar.
+
+**Decisión tomada: no se fusiona nada en bloque.** Es una reimplementación paralela e independiente de lo mismo que ya tenemos (y más completa de nuestro lado: nuestro GraphQL tiene Mutation y Subscription, su `Query.cs` nada más; nuestro Redis está probado en vivo, el suyo (`IServiceCache`) tiene incluso un typo en un nombre de método; él puso Mongo en Proveedor, nosotros en Categoria — misma idea, sin que una sea mejor que la otra). Fusionar habría significado resolver conflictos en casi todos los ficheros de Categoria/Proveedor/GraphQL/Cache para acabar quedándonos con la nuestra de todas formas.
+
+**Lo único que sí se salvó:** la idea de exponer `Proveedor` como campo del Funko — que coincidía exactamente con un pendiente que ya teníamos anotado nosotros mismos (Entrada 13: "Proveedor en Funko es una relación opcional todavía no expuesta en los DTOs"). Implementado a nuestra manera, no copiando su código (el suyo tenía un bug real: `ProveedorEntity Proveedor { get; set; } = null;` sin el operador `!`, en una propiedad no anulable, y lo hacía obligatorio en vez de opcional).
+
+**Qué se hizo exactamente:**
+- `Models.Funko.Proveedor` (`string?`, opcional).
+- `CreateFunkoDto`/`UpdateFunkoDto`: parámetro `Proveedor` opcional al final (`= null`), para no romper ningún test existente que ya construye estos DTOs sin él.
+- `FunkoDto.Proveedor` en la respuesta.
+- `RepositoryFunko`: mismo patrón "obtener o crear por nombre" que ya existía para Categoria (`ObtenerOCrearProveedor`), pero sin crear nada si no viene informado.
+- `FunkoValidator`: si se informa un Proveedor, no puede ser solo espacios (igual regla que Categoria).
+
+**Verificado en vivo:** creado un Funko sin proveedor (funciona, campo `null`), creado otro con proveedor nuevo ("Funko Inc") — se crea automáticamente y aparece correctamente en `GET /api/Proveedor`. 82/82 tests en verde, sin tocar ninguno existente.
+
+**Alternativas descartadas:** copiar literalmente el código de Jesús. Descartado por el bug de nulabilidad y porque lo hacía obligatorio, contradiciendo nuestra propia decisión ya tomada de que fuera opcional.
+
+**Qué queda pendiente:** checklist final y presentación — ya cerrados en `EXPOSICION.md`, solo falta actualizar ese documento para reflejar que el pendiente de "Proveedor en Funko" ya está resuelto.
+
 <!-- La siguiente entrada se añade aquí, con el mismo formato: Qué se hizo / Decisión y porqué / Alternativas descartadas / Pendiente -->

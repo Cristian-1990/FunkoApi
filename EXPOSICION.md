@@ -45,6 +45,7 @@ hecho, y la **explicación en tres niveles** para que la domines de menos a más
 | Identity | ⏸️ Aparcado — pendiente de confirmar con Jesús/profesor qué significa exactamente | — |
 | Todo con Docker (dev/prod) | ✅ Hecho | Todos los bloques |
 | Test con Bruno | ✅ Hecho (colección representativa, no exhaustiva) | Bloque 8 |
+| Proveedor expuesto en Funko | ✅ Hecho | Cerrado al revisar (y no fusionar) el trabajo paralelo de Jesús — detectamos que era un pendiente nuestro y lo resolvimos a nuestra manera |
 
 ### Lo que queda honestamente fuera o a medias
 
